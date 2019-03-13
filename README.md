@@ -1,6 +1,6 @@
 # Focus Traversal API
 
-A polyfill for the Focus Traversal API proposed to the [W3C](https://www.w3.org) here: [Focus Traversal API](https://discourse.wicg.io/). This work is based on and includes the [Tabbable Library by David Clark](https://github.com/davidtheclark/tabbable).
+A polyfill for the Focus Traversal API proposed to the [W3C](https://www.w3.org) here: [Focus Traversal API](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427). This work is based on and includes the [Tabbable Library by David Clark](https://github.com/davidtheclark/tabbable).
 
 ## Usage
 
