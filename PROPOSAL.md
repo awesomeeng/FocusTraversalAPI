@@ -35,7 +35,7 @@ A rough example of this API might be the following:
 
 ## Example Polyfill
 
-An example implementation of the above as well as this document can be found at https://github.com/awesomeeng/WebFocusAPI.
+An example implementation of the above as well as this document can be found at https://github.com/awesomeeng/FocusTraversalAPI.
 
 ## Similar Works
 

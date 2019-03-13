@@ -7,7 +7,7 @@ A polyfill for the Focus Traversal API proposed to the [W3C](https://www.w3.org)
 Install from npm...
 
 ```
-npm install focustraversalapi
+npm install focus-traversal-api-polyfill
 ```
 
 Copy the polyfill into your own project...
@@ -53,7 +53,7 @@ This polyfill should be compatable with all modern browsers including Internet E
 
 ## Issues
 
-If you would like to comment on the proposal, please [open an issue](https://github.com/awesomeeng/WebFocusAPI/issues).
+If you would like to comment on the proposal, please [open an issue](https://github.com/awesomeeng/FocusTraversalAPI/issues).
 
 ## License
 

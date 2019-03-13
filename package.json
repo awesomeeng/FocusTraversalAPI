@@ -1,5 +1,5 @@
 {
-  "name": "focustraversalapi",
+  "name": "focus-traversal-api-polyfill",
   "version": "1.0.0",
   "author": "the awesome engineering company",
   "license": "MIT",
@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/awesomeeng/WebFocusAPI.git"
+    "url": "git+https://github.com/awesomeeng/FocusTraversalAPI.git"
   },
   "keywords": [
     "focus",
@@ -46,7 +46,7 @@
     "web focus traversal api"
   ],
   "bugs": {
-    "url": "https://github.com/awesomeeng/WebFocusAPI/issues"
+    "url": "https://github.com/awesomeeng/FocusTraversalAPI/issues"
   },
-  "homepage": "https://github.com/awesomeeng/WebFocusAPI#readme"
+  "homepage": "https://github.com/awesomeeng/FocusTraversalAPI#readme"
 }
