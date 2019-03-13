@@ -1,4 +1,4 @@
-# [Proposal] Focus Traversal API
+# Focus Traversal API
 
 The current system for programmatically manipulating focus within a web page leaves a lot to be desired. A single element can request the focus with the `focus()` method but that is the extent of the programatic focus navigation options.  Advancing the focus to the next focusable element or the previous focusable element involves a complex dance of DOM traversal and guess work as to what elements can recieve focus or not.  Most solutions to manipulating focus are complicated; the very simple need to manipulate focus in a meaningful and accessalbe manner is significantly lacking.
 
