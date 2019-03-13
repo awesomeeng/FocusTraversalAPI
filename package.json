@@ -1,0 +1,52 @@
+{
+  "name": "focustraversalapi",
+  "version": "1.0.0",
+  "author": "the awesome engineering company",
+  "license": "MIT",
+  "contributors": [
+    "Glen R. Goodwin"
+  ],
+  "main": "./polyfill/web-focus-api-polyfill.js",
+  "dependencies": {
+	  "tabbable": "4.0.0"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "4.0.1",
+    "mocha": "6.0.1",
+	"minify": "4.1.1"
+  },
+  "optionalDependencies": {},
+  "scripts": {
+    "lint": "eslint src",
+    "docs": "jsdoc2md src/** --separators > docs/API.md",
+    "test": "mocha test",
+    "tests": "mocha test",
+	"minify": "cp src/focus-traversal-api-polyfill.js focus-traversal-api-polyfill.full.js && minify src/focus-traversal-api-polyfill.js > focus-traversal-api-polyfill.min.js"
+  },
+  "description": "Focus Traversal API polyfill.",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awesomeeng/WebFocusAPI.git"
+  },
+  "keywords": [
+    "focus",
+    "focus traversal",
+    "focus api",
+    "focus traversal api",
+    "traversal api",
+    "browser focus",
+    "browser focus api",
+    "browser focus traversal api",
+    "web focus",
+    "web focus api",
+    "web focus traversal api"
+  ],
+  "bugs": {
+    "url": "https://github.com/awesomeeng/WebFocusAPI/issues"
+  },
+  "homepage": "https://github.com/awesomeeng/WebFocusAPI#readme"
+}
