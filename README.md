@@ -13,7 +13,7 @@ npm install focus-traversal-api-polyfill
 Copy the polyfill into your own project...
 
 ```shell
-cp @awesomeeng/webfocusapi/focus-traversal-api-polyfill.min.js .
+cp focus-traversal-api-polyfill/focus-traversal-api-polyfill.min.js .
 ```
 
 Include in your index.html...
