@@ -30,48 +30,79 @@
 	// ELSE descend
 
 	var dom = {};
+	dom.first = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		return element.firstElementChild || delveShadow && element.shadowRoot && element.shadowRoot.firstElementChild || null;
+	};
+	dom.last = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		return delveShadow && element.shadowRoot && element.shadowRoot.lastElementChild || element.lastElementChild || null;
+	};
 	dom.up = function(element,delveShadow) {
-		console.log("up",element);
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 		return element.parentElement || delveShadow && element.parentNode instanceof DocumentFragment && element.parentNode.host || null;
 	};
 	dom.down = function(element,delveShadow) {
-		console.log("down",element);
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		var children = toArray(element.children);
-		if (delveShadow && element.shadowRoot) children = children.concat(toArray(element.shadowRoot.children));
-		return children.length>0 && children[0] || null;
+		return dom.first(element,delveShadow);
 	};
 	dom.next = function(element,delveShadow) {
-		console.log("next",element);
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 		return element.nextElementSibling || delveShadow && element.shadowRoot && element.shadowRoot.firstElementChild || null;
 	};
 	dom.prev = function(element,delveShadow) {
-		console.log("prev",element);
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 		return element.previousElementSibling && delveShadow && element.parentNode instanceof DocumentFragment && element.parentNode.host && element.parentNode.host.lastElementChild || null;
 	};
 	dom.ascend = function(element,delveShadow) {
-		console.log("ascend",element);
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 		while(dom.up(element,delveShadow)) element = dom.up(element,delveShadow);
 		return element;
 	};
 	dom.descend = function(element,delveShadow) {
-		console.log("descend",element);
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 		while (dom.down(element,delveShadow)) element = dom.down(element,delveShadow);
 		return element;
 	};
-	dom.first = dom.descend;
+	dom.deepest = dom.descend;
 	dom.forward = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 
+		console.log(1,element);
 		var next = dom.next(element,delveShadow);
-		if (next) return dom.descend(next,delveShadow) || next;
-		else return dom.up(element,delveShadow);
+		console.log(2,next);
+
+		if (next) {
+			console.log(3);
+			return dom.descend(next,delveShadow) || next;
+		}
+		else {
+			console.log(4);
+			return dom.up(element,delveShadow);
+		}
 	};
+	dom.descendants = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		var desc = [];
+		var e = dom.deepest(element,delveShadow);
+		while (e && e!==element) {
+			desc.push(e);
+			e = dom.forward(e,delveShadow);
+		}
+		return desc;
+	};
+	dom.ancestors = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		var ansc = [];
+		let e = element;
+		while (e) {
+			console.log(1,e);
+			ansc.unshift(e);
+			e = dom.up(e,delveShadow);
+			if (!e || e===document.body.parentElement) break;
+		}
+		return ansc;
+	}
 	window.glendom = dom;
 
 	var tabbable = (function() {
@@ -312,8 +343,6 @@
 			if (currentFocus) previousFocus = currentFocus;
 
 			currentFocus = event.target;
-
-			console.log(1,event.target);
 		},true);
 		document.addEventListener("blur",function(){
 			previousFocus = currentFocus;
