@@ -1,7 +1,80 @@
 (function (){
 	if (typeof window==="undefined" || window.focusManager) return;
 
-	const tabbable = (function() {
+	var toArray = function(a) {
+		return Array.prototype.slice.call(a);
+	};
+
+
+	//
+	//                        A
+	//                       / \
+	//                      B   G
+	//                     / \   \
+	//                    C   F   H
+	//                   / \
+	//                  D   E
+	//
+	// GIVEN A, NEXT = D
+	// GIVEN D, NEXT = E
+	// GIVEN E, NEXT = C
+	// GIVEN C, NEXT = F
+	// GIVEN F, NEXT = B
+	// GIVEN B, NEXT = H
+	// GIVEN H, NEXT = G
+	// GIVEN G, NEXT = A
+	//
+	// X = descend
+	// IF X==Y, next
+	// IF X==null, up
+	// ELSE descend
+
+	var dom = {};
+	dom.up = function(element,delveShadow) {
+		console.log("up",element);
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		return element.parentElement || delveShadow && element.parentNode instanceof DocumentFragment && element.parentNode.host || null;
+	};
+	dom.down = function(element,delveShadow) {
+		console.log("down",element);
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		var children = toArray(element.children);
+		if (delveShadow && element.shadowRoot) children = children.concat(toArray(element.shadowRoot.children));
+		return children.length>0 && children[0] || null;
+	};
+	dom.next = function(element,delveShadow) {
+		console.log("next",element);
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		return element.nextElementSibling || delveShadow && element.shadowRoot && element.shadowRoot.firstElementChild || null;
+	};
+	dom.prev = function(element,delveShadow) {
+		console.log("prev",element);
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		return element.previousElementSibling && delveShadow && element.parentNode instanceof DocumentFragment && element.parentNode.host && element.parentNode.host.lastElementChild || null;
+	};
+	dom.ascend = function(element,delveShadow) {
+		console.log("ascend",element);
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		while(dom.up(element,delveShadow)) element = dom.up(element,delveShadow);
+		return element;
+	};
+	dom.descend = function(element,delveShadow) {
+		console.log("descend",element);
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		while (dom.down(element,delveShadow)) element = dom.down(element,delveShadow);
+		return element;
+	};
+	dom.first = dom.descend;
+	dom.forward = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+
+		var next = dom.next(element,delveShadow);
+		if (next) return dom.descend(next,delveShadow) || next;
+		else return dom.up(element,delveShadow);
+	};
+	window.glendom = dom;
+
+	var tabbable = (function() {
 		// Tabbable from David Clark.
 		// https://github.com/davidtheclark/tabbable
 		//
@@ -203,14 +276,14 @@
 	var forward = function() {
 		if (!currentFocus) return;
 
-		let target = next();
+		var target = next();
 		if (target && target!==currentFocus) target.focus();
 	};
 
 	var backward = function() {
 		if (!currentFocus) return;
 
-		let target = previous();
+		var target = previous();
 		if (target && target!==currentFocus) target.focus();
 	};
 
@@ -218,8 +291,8 @@
 		if (!element) element = currentFocus;
 		if (!element || !(element instanceof Element)) return null;
 
-		let elements = orderedElements();
-		let index = elements.indexOf(element);
+		var elements = orderedElements();
+		var index = elements.indexOf(element);
 		return elements[index+1];
 	};
 
@@ -227,8 +300,8 @@
 		if (!element) element = currentFocus;
 		if (!element || !(element instanceof Element)) return null;
 
-		let elements = orderedElements();
-		let index = elements.indexOf(element);
+		var elements = orderedElements();
+		var index = elements.indexOf(element);
 		return elements[index-1];
 	};
 
@@ -239,6 +312,8 @@
 			if (currentFocus) previousFocus = currentFocus;
 
 			currentFocus = event.target;
+
+			console.log(1,event.target);
 		},true);
 		document.addEventListener("blur",function(){
 			previousFocus = currentFocus;
