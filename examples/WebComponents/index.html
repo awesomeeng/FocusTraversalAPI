@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+<meta charset="utf-8">
 	<head>
 		<meta charset="utf-8">
-		<title>WebFocusAPI - Test Page</title>
-		<script src="./focus-traversal-api-polyfill.js" type="text/javascript">
-
-		</script>
+		<title>Zeph - Examples - BasicComponent</title>
+		<script src="../../src/focus-traversal-api-polyfill.js" type="text/javascript"></script>
+		<script src="./focus-example.js" type="module"></script>
 		<style>
 			body {
 				font-family: sans-serif;
@@ -56,33 +56,17 @@
 	<body>
 		<div class="container">
 			<div class="field">
-				<label for"t1">First Name</label>
-				<input type="text"></input>
+				<label>Your Name?</label>
+				<input type="text" autofocus>
 			</div>
-			<div class="field">
-				<label for"t1">Last Name</label>
-				<input type="text"></input>
-			</div>
-			<div class="field">
-				<label for"t1">Address 1</label>
-				<input type="text"></input>
-			</div>
-			<div class="field">
-				<label for"t1">Address 2</label>
-				<input type="text"></input>
-			</div>
-			<div class="field">
-				<label for"t1">City</label>
-				<input type="text"></input>
-			</div>
-			<div class="field">
-				<label for"t1">State/Province</label>
-				<input type="text"></input>
-			</div>
-			<div class="field">
-				<label for"t1">Postal Code</label>
-				<input type="text"></input>
-			</div>
+		</div>
+		<div class="container">
+			<focus-example label="Favorite Bob's Burgers Character?">Louise Belcher</focus-example>
+			<focus-example label="Favorite Simpsons Character?"></focus-example>
+			<focus-example label="Favorite Family Guy Character?">Gene Belcher</focus-example>
+			<focus-example label="Favorite Archer Character?">Archer Sterling</focus-example>
+		</div>
+		<div class="container">
 			<div class="buttons">
 				<button id="first" tabindex="-1">Focus First</button>
 				<button id="backward" tabindex="-1">Focus Backward</button>
@@ -154,7 +138,6 @@
 				let target = focusManager.previous();
 				if (target) target.className = "highlight";
 			});
-
 		</script>
 	</body>
 </html>

@@ -1,0 +1,22 @@
+:host {
+	display: block;
+	font-family: sans-serif;
+	padding: 10px 10px;
+	width: 100%;
+}
+
+label {
+	display: block;
+	font-size: 14px;
+}
+
+input {
+	display: block;
+	width: 93%;
+	font-size: 18px;
+	font-weight: bold;
+	padding: 3px 5px;
+	border-radius: 5px 0px 5px 0px;
+	border: 2px solid black;
+	outline: none;
+}
