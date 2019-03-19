@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<meta charset="utf-8">
+	<head>
+		<meta charset="utf-8">
+		<title>WebComponents - Examples - FocusTraversalAPI</title>
+		<script src="../../src/focus-traversal-api-polyfill.js" type="text/javascript"></script>
+		<script src="./focus-example.js" type="module"></script>
+		<style>
+			body {
+				font-family: sans-serif;
+				font-size: 18px;
+			}
+			.container {
+				margin: 10px;
+				padding: 10px;
+				border: 1px solid #888;
+				width: 400px;
+			}
+
+			.field {
+				padding: 5px;
+				width: 100%;
+			}
+
+			.field > label {
+				display: block;
+				font-size: smaller;
+				font-weight: bold;
+			}
+
+			.field > input {
+				display: block;
+				width: 96%;
+				padding: 3px 5px;
+			}
+
+			.field > input.highlight {
+				background: #FFFFAA;
+			}
+
+			.field > input:focus {
+				background: #AAFFAA;
+			}
+
+			.buttons {
+				padding: 5px;
+			}
+
+			.buttons > * {
+				padding: 0px 10px;
+				margin-bottom: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="field">
+				<label>Your Name?</label>
+				<input type="text" autofocus>
+			</div>
+		</div>
+		<div class="container">
+			<focus-example label="Favorite Bob's Burgers Character?">Louise Belcher</focus-example>
+			<focus-example label="Favorite Simpsons Character?"></focus-example>
+			<focus-example label="Favorite Family Guy Character?">Brian</focus-example>
+			<focus-example label="Favorite Archer Character?">Archer Sterling</focus-example>
+		</div>
+		<div class="container">
+			<div class="buttons">
+				<button id="first" tabindex="-1">Focus First</button>
+				<button id="backward" tabindex="-1">Focus Backward</button>
+				<button id="forward" tabindex="-1">Focus Forward</button>
+				<button id="last" tabindex="-1">Focus Last</button>
+				<button id="list" tabindex="-1">Focus List</button>
+				<button id="prev" tabindex="-1">Highlight Previous Focus</button>
+				<button id="next" tabindex="-1">Highlight Next Focus</button>
+			</div>
+		</div>
+		<script>
+			var first = document.body.querySelector("#first");
+			var backward = document.body.querySelector("#backward");
+			var forward = document.body.querySelector("#forward");
+			var last = document.body.querySelector("#last");
+			var list = document.body.querySelector("#list");
+			var next = document.body.querySelector("#next");
+			var prev = document.body.querySelector("#prev");
+			var highlighted = null;
+
+			var removeHighlight = function() {
+				if (highlighted) highlighted.className = "";
+				highlighted = null;
+			};
+
+			var undoButtonFocus = function() {
+				focusManager.focus(focusManager.previouslyFocused);
+			};
+
+			first.addEventListener("click",function(event){
+				removeHighlight();
+				undoButtonFocus();
+
+				var elements = focusManager.orderedElements();
+				if (elements.length>0) focusManager.focus(elements[0]);
+			});
+
+			backward.addEventListener("click",function(event){
+				removeHighlight();
+				undoButtonFocus();
+				focusManager.backward();
+			});
+
+			forward.addEventListener("click",function(event){
+				removeHighlight();
+				undoButtonFocus();
+				focusManager.forward();
+			});
+
+			last.addEventListener("click",function(event){
+				removeHighlight();
+				undoButtonFocus();
+
+				var elements = focusManager.orderedElements();
+				if (elements.length>0) focusManager.focus(elements[elements.length-1]);
+			});
+
+			list.addEventListener("click",function(event){
+				undoButtonFocus();
+				console.log(focusManager.orderedElements());
+			});
+
+			next.addEventListener("click",function(event){
+				removeHighlight();
+				undoButtonFocus();
+				highlighted = focusManager.next();
+				if (highlighted) highlighted.className = "highlight";
+			});
+
+			prev.addEventListener("click",function(event){
+				removeHighlight();
+				undoButtonFocus();
+				highlighted = focusManager.previous();
+				if (highlighted) highlighted.className = "highlight";
+			});
+		</script>
+	</body>
+</html>

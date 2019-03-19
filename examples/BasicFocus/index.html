@@ -2,10 +2,8 @@
 <html lang="en" dir="ltr">
 	<head>
 		<meta charset="utf-8">
-		<title>WebFocusAPI - Test Page</title>
-		<script src="./focus-traversal-api-polyfill.js" type="text/javascript">
-
-		</script>
+		<title>BasicFocus - Examples - FocusTraversalAPI</title>
+		<script src="../../src/focus-traversal-api-polyfill.js" type="text/javascript"></script>
 		<style>
 			body {
 				font-family: sans-serif;
@@ -31,7 +29,7 @@
 
 			.field > input {
 				display: block;
-				width: 96%;
+				width: 93%;
 				padding: 3px 5px;
 			}
 
@@ -65,10 +63,6 @@
 			</div>
 			<div class="field">
 				<label for"t1">Address 1</label>
-				<input type="text"></input>
-			</div>
-			<div class="field">
-				<label for"t1">Address 2</label>
 				<input type="text"></input>
 			</div>
 			<div class="field">
@@ -154,7 +148,6 @@
 				let target = focusManager.previous();
 				if (target) target.className = "highlight";
 			});
-
 		</script>
 	</body>
 </html>
