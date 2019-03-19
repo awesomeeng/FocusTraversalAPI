@@ -5,7 +5,7 @@ A polyfill for the Focus Traversal API proposed to the [W3C](https://www.w3.org)
 ## Features
 
  - Implements proposed Focus Traversal API standard.
- - Programatically move the focus forward or backwards;
+ - Programatically move the focus forward or backwards.
  - Identify the next and previous items to receive focus.
  - Supports handling focus in Shadow DOM hidden components.
  - History of the last n focus holders.
