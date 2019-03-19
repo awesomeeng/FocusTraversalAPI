@@ -2,6 +2,15 @@
 
 A polyfill for the Focus Traversal API proposed to the [W3C](https://www.w3.org) here: [Focus Traversal API](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427). This work is based on and includes the [Tabbable Library by David Clark](https://github.com/davidtheclark/tabbable).
 
+## Features
+
+ - Implements proposed Focus Traversal API standard.
+ - Programatically move the focus forward or backwards;
+ - Identify the next and previous items to receive focus.
+ - Supports handling focus in Shadow DOM hidden components.
+ - History of the last n focus holders.
+ - Works on all modern browsers including Internet Explorer 9 or later.
+
 ## Usage
 
 Install from npm...
@@ -26,8 +35,7 @@ You may now use the focusManager as described in the section below.
 
 ## API Documentation
 
-> `window.focusManager.currentlyFocused`
- - Contains the element currently holding the focus, if any.
+> `window.focusManager.currentlyFocused` - Contains the element currently holding the focus, if any.
 
 > `window.focusManager.previouslyFocused` - Contains the element that held the focus prior to the current focus, if any.
 
@@ -46,10 +54,6 @@ You may now use the focusManager as described in the section below.
 > `window.focusManager.previous(element)` - Returns the element that would revieve the focus if `window.focusManager.backward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
 
 > `window.focusManager.orderedElements()` - Returns an array of all focusable elements in the order that focus traversal would occur
-
-## Browser Compatable
-
-This polyfill should be compatable with all modern browsers including Internet Explorer 9 and beyond.
 
 ## Issues
 
