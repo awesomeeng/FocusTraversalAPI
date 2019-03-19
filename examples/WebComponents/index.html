@@ -63,7 +63,7 @@
 		<div class="container">
 			<focus-example label="Favorite Bob's Burgers Character?">Louise Belcher</focus-example>
 			<focus-example label="Favorite Simpsons Character?"></focus-example>
-			<focus-example label="Favorite Family Guy Character?">Gene Belcher</focus-example>
+			<focus-example label="Favorite Family Guy Character?">Brian</focus-example>
 			<focus-example label="Favorite Archer Character?">Archer Sterling</focus-example>
 		</div>
 		<div class="container">
@@ -78,65 +78,69 @@
 			</div>
 		</div>
 		<script>
-			let first = document.body.querySelector("#first");
-			let backward = document.body.querySelector("#backward");
-			let forward = document.body.querySelector("#forward");
-			let last = document.body.querySelector("#last");
-			let list = document.body.querySelector("#list");
-			let next = document.body.querySelector("#next");
-			let prev = document.body.querySelector("#prev");
+			var first = document.body.querySelector("#first");
+			var backward = document.body.querySelector("#backward");
+			var forward = document.body.querySelector("#forward");
+			var last = document.body.querySelector("#last");
+			var list = document.body.querySelector("#list");
+			var next = document.body.querySelector("#next");
+			var prev = document.body.querySelector("#prev");
+			var highlighted = null;
 
-			let removeHighlight = function() {
-				document.body.querySelectorAll("input").forEach(function(e){
-					e.className = "";
-				});
+			var removeHighlight = function() {
+				if (highlighted) highlighted.className = "";
+				highlighted = null;
+			};
+
+			var undoButtonFocus = function() {
+				focusManager.focus(focusManager.previouslyFocused);
 			};
 
 			first.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				undoButtonFocus();
 
-				let elements = focusManager.orderedElements();
+				var elements = focusManager.orderedElements();
 				if (elements.length>0) focusManager.focus(elements[0]);
 			});
 
 			backward.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				undoButtonFocus();
 				focusManager.backward();
 			});
 
 			forward.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				undoButtonFocus();
 				focusManager.forward();
 			});
 
 			last.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				undoButtonFocus();
 
-				let elements = focusManager.orderedElements();
+				var elements = focusManager.orderedElements();
 				if (elements.length>0) focusManager.focus(elements[elements.length-1]);
 			});
 
 			list.addEventListener("click",function(event){
-				focusManager.focus(focusManager.previouslyFocused);
+				undoButtonFocus();
 				console.log(focusManager.orderedElements());
 			});
 
 			next.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
-				let target = focusManager.next();
-				if (target) target.className = "highlight";
+				undoButtonFocus();
+				highlighted = focusManager.next();
+				if (highlighted) highlighted.className = "highlight";
 			});
 
 			prev.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
-				let target = focusManager.previous();
-				if (target) target.className = "highlight";
+				undoButtonFocus();
+				highlighted = focusManager.previous();
+				if (highlighted) highlighted.className = "highlight";
 			});
 		</script>
 	</body>

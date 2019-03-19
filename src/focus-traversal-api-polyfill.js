@@ -1,35 +1,50 @@
 (function (){
 	if (typeof window==="undefined" || window.focusManager) return;
 
-	var toArray = function(a) {
-		return Array.prototype.slice.call(a);
-	};
-
-
-	//
-	//                        A
-	//                       / \
-	//                      B   G
-	//                     / \   \
-	//                    C   F   H
-	//                   / \
-	//                  D   E
-	//
-	// GIVEN A, NEXT = D
-	// GIVEN D, NEXT = E
-	// GIVEN E, NEXT = C
-	// GIVEN C, NEXT = F
-	// GIVEN F, NEXT = B
-	// GIVEN B, NEXT = H
-	// GIVEN H, NEXT = G
-	// GIVEN G, NEXT = A
-	//
-	// X = descend
-	// IF X==Y, next
-	// IF X==null, up
-	// ELSE descend
-
 	var dom = {};
+	dom.forward = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+
+		var next = dom.next(element,delveShadow);
+		if (next) return dom.descend(next,delveShadow) || next;
+		else return dom.up(element,delveShadow);
+	};
+	dom.backward = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		var prev = dom.last(element,delveShadow);
+		if (prev) return prev;
+		else {
+			prev = dom.prev(element,delveShadow);
+			if (prev) return prev;
+
+			prev = element;
+			while (true) {
+				var up = dom.up(prev,delveShadow);
+				if (!up || up===document.body.parentElement) return null;
+				prev = dom.prev(up,delveShadow);
+				if (prev && prev!==document.body.parentElement && prev!==document.head) return prev;
+				prev = up;
+			}
+		}
+	};
+	dom.forwardList = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		let elements = [];
+		while (element && element!==document.body.parentElement) {
+			elements.push(element);
+			element = dom.forward(element,delveShadow);
+		}
+		return elements;
+	};
+	dom.backwardList = function(element,delveShadow) {
+		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
+		let elements = [];
+		while (element && element!==document.body.parentElement) {
+			elements.push(element);
+			element = dom.backward(element,delveShadow);
+		}
+		return elements;
+	};
 	dom.first = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 		return element.firstElementChild || delveShadow && element.shadowRoot && element.shadowRoot.firstElementChild || null;
@@ -42,17 +57,33 @@
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 		return element.parentElement || delveShadow && element.parentNode instanceof DocumentFragment && element.parentNode.host || null;
 	};
-	dom.down = function(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		return dom.first(element,delveShadow);
-	};
+	dom.down = dom.first;
+	dom.downLast = dom.last;
 	dom.next = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		return element.nextElementSibling || delveShadow && element.shadowRoot && element.shadowRoot.firstElementChild || null;
+		if (!delveShadow) {
+			return element.nextElementSibling;
+		}
+		else {
+			var next = element.nextElementSibling;
+			if (next) return next;
+			else {
+				var parent = element.parentElement;
+				if (parent && element.parentNode instanceof DocumentFragment && element.parentNode.shadowRoot) return element.parentNode.shadowRoot.firstElementChild;
+				return null;
+			}
+		}
 	};
 	dom.prev = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		return element.previousElementSibling && delveShadow && element.parentNode instanceof DocumentFragment && element.parentNode.host && element.parentNode.host.lastElementChild || null;
+		if (!delveShadow) {
+			return element.previousElementSibling;
+		}
+		else {
+			var parent = element.parentElement;
+			if (parent && element.parentNode instanceof DocumentFragment && element.parentNode.shadowRoot) return element.parentNode.shadowRoot.lastElementChild;
+			else return element.previousElementSibling;
+		}
 	};
 	dom.ascend = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
@@ -64,22 +95,10 @@
 		while (dom.down(element,delveShadow)) element = dom.down(element,delveShadow);
 		return element;
 	};
-	dom.deepest = dom.descend;
-	dom.forward = function(element,delveShadow) {
+	dom.descendLast = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-
-		console.log(1,element);
-		var next = dom.next(element,delveShadow);
-		console.log(2,next);
-
-		if (next) {
-			console.log(3);
-			return dom.descend(next,delveShadow) || next;
-		}
-		else {
-			console.log(4);
-			return dom.up(element,delveShadow);
-		}
+		while (dom.downLast(element,delveShadow)) element = dom.downLast(element,delveShadow);
+		return element;
 	};
 	dom.descendants = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
@@ -96,14 +115,12 @@
 		var ansc = [];
 		let e = element;
 		while (e) {
-			console.log(1,e);
 			ansc.unshift(e);
 			e = dom.up(e,delveShadow);
 			if (!e || e===document.body.parentElement) break;
 		}
 		return ansc;
-	}
-	window.glendom = dom;
+	};
 
 	var tabbable = (function() {
 		// Tabbable from David Clark.
@@ -287,8 +304,8 @@
 
 	var history = [];
 	var historyLimit = 50;
-	var currentFocus = null;
 	var previousFocus = null;
+	var currentFocus = document.activeElement || null;
 
 	var focus = function(element) {
 		if (!element || !(element instanceof Element)) return;
@@ -300,12 +317,14 @@
 		return currentFocus===element;
 	};
 
-	var orderedElements = function(){
-		return tabbable(document.body);
+	var orderedElements = function(element){
+		return dom.forwardList(dom.descend(element||document.body,true),true).filter(function(e){
+			return tabbable.isTabbable(e);
+		});
 	};
 
 	var forward = function() {
-		if (!currentFocus) return;
+		if (!document.activeElement) return;
 
 		var target = next();
 		if (target && target!==currentFocus) target.focus();
@@ -322,31 +341,41 @@
 		if (!element) element = currentFocus;
 		if (!element || !(element instanceof Element)) return null;
 
-		var elements = orderedElements();
-		var index = elements.indexOf(element);
-		return elements[index+1];
+		while (element) {
+			element = dom.forward(element,true);
+			if (element && tabbable.isTabbable(element)) return element;
+		}
+		return null;
 	};
 
 	var previous = function(element) {
 		if (!element) element = currentFocus;
 		if (!element || !(element instanceof Element)) return null;
 
-		var elements = orderedElements();
-		var index = elements.indexOf(element);
-		return elements[index-1];
+		while (element) {
+			element = dom.backward(element,true);
+			if (element && tabbable.isTabbable(element)) return element;
+		}
 	};
 
 	document.addEventListener("DOMContentLoaded",function(){
 		document.addEventListener("focus",function(event){
-			history.unshift(event.target);
+			var target = event.target;
+			if (event.composedPath) {
+				var path = event.composedPath();
+				if (path.length>0) target = path[0];
+			}
+			currentFocus = target;
+			history.unshift(currentFocus);
 			if (historyLimit>-1) history = history.slice(0,historyLimit);
-			if (currentFocus) previousFocus = currentFocus;
-
-			currentFocus = event.target;
 		},true);
-		document.addEventListener("blur",function(){
-			previousFocus = currentFocus;
-			currentFocus = null;
+		document.addEventListener("blur",function(event){
+			var target = event.target;
+			if (event.composedPath) {
+				var path = event.composedPath();
+				if (path.length>0) target = path[0];
+			}
+			previousFocus = target;
 		},true);
 	});
 
