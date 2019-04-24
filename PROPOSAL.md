@@ -14,6 +14,8 @@ A rough example of this API might be the following:
 
 `window.focusManager.history` - An array of the last n historical focus holders.
 
+`window.focusManager.isFocusable(element)` - Returns true if the given element can receive the focus.
+
 `window.focusManager.hasFocus(element)` - Returns true if the given element currently has the focus.  Functionally equivelent to `window.focusManager.currentlyFocused===element`.
 
 `window.focusManager.focus(element)` - Focus on the given element. Functionally the same as `element.focus()`. Returns void.
