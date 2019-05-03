@@ -307,6 +307,10 @@
 	var previousFocus = null;
 	var currentFocus = document.activeElement || null;
 
+	var isFocusable = function(element) {
+		return tabbable.isFocusable(element);
+	};
+
 	var focus = function(element) {
 		if (!element || !(element instanceof Element)) return;
 		element.focus();
@@ -380,6 +384,7 @@
 	});
 
 	window.focusManager = {
+		isFocusable: isFocusable,
 		focus: focus,
 		hasFocus: hasFocus,
 		forward: forward,

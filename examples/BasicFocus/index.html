@@ -130,9 +130,9 @@
 				if (elements.length>0) focusManager.focus(elements[elements.length-1]);
 			});
 
-			list.addEventListener("click",function(event){
+			list.addEventListener("click",async function(event){
 				focusManager.focus(focusManager.previouslyFocused);
-				console.log(focusManager.orderedElements());
+				console.log(await focusManager.orderedElements());
 			});
 
 			next.addEventListener("click",function(event){
