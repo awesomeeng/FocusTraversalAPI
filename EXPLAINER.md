@@ -48,7 +48,7 @@ As part of this proposal some additional conveinience methods and properties are
 
 `window.focusManager.hasFocus(element)` - Returns true if the given element currently has the focus.  Functionally equivelent to `window.focusManager.currentlyFocused === element`.
 
-`window.focusManager.focus(element)` - Focus on the given element. Functionally the same as `element.focus()`. Returns void.
+`window.focusManager.focus(element,focusOption)` - Focus on the given element. Functionally the same as `element.focus()`. Returns void.
 
 `window.focusManager.orderedElements()` - Returns an array of all focusable elements in the order that focus traversal would occur.
 
@@ -69,6 +69,36 @@ The benefits of adopting this proposal include easing developer efforts in regar
 Largely, this proposal should not impact any existing systems as it is an addition to instead of a replacement or removal.  Some consideration should be made to extract out the rule system for determining the focus-ability of an element into a common space if not already done so by implementors.
 
 Also, this proposal is currently unsure about how this would interact with an `<iframe>` or anything that contains its own document structure.
+
+## Proposed API
+
+> `window.focusManager.currentlyFocused` - Contains the element currently holding the focus, if any.
+
+> `window.focusManager.previouslyFocused` - Contains the element that held the focus prior to the current focus, if any.
+
+> `window.focusManager.history` - An array of the last n historical focus holders.
+
+> `window.focusManager.historyLimit` - A number indicating how may focus history events should be retained. Defaults to 50.
+
+> `window.focusManager.isFocusable(element)` - Returns true if the given element can recieve focus.
+
+> `window.focusManager.hasFocusable(element)` - Returns true if the given element currently has the focus.
+
+> `window.focusManager.focus(element,focusOption)` - Focus on the given element. Functionally the same as `element.focus()`. Returns void.
+
+> `window.focusManager.forward(focusOption)` - Move the focus to the next focusable element.  Returns void.
+
+> `window.focusManager.backward(focusOption)` - Move the focus to the previous focusable element.  Returns void.
+
+> `window.focusManager.next(element)` - Returns the element that would revieve the focus if `window.focusManager.forward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
+
+> `window.focusManager.previous(element)` - Returns the element that would revieve the focus if `window.focusManager.backward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
+
+> `window.focusManager.orderedElements(container)` - Returns an array of all focusable elements in the order that focus traversal would occur. If container is provided and a valid HTMLElement, this would limit the results to only the children of the given container. If no container is provided, the current document is used as the container.
+
+> `window.focusManager.first(container)` - Returns the first element that would recieve focus for the given container, or the current document if no container is provided.
+
+> `window.focusManager.last(container)` - Returns the first element that would recieve focus for the given container, or the current document if no container is provided.
 
 ## Status
 
