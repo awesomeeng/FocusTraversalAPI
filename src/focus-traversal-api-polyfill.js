@@ -311,9 +311,9 @@
 		return tabbable.isFocusable(element);
 	};
 
-	var focus = function(element) {
+	var focus = function(element,focusOption) {
 		if (!element || !(element instanceof Element)) return;
-		element.focus();
+		element.focus(focusOption||{});
 	};
 
 	var hasFocus = function(element) {
@@ -321,24 +321,34 @@
 		return currentFocus===element;
 	};
 
-	var orderedElements = function(element){
-		return dom.forwardList(dom.descend(element||document.body,true),true).filter(function(e){
+	var orderedElements = function(container){
+		return dom.forwardList(dom.descend(container||document.body,true),true).filter(function(e){
 			return tabbable.isTabbable(e);
 		});
 	};
 
-	var forward = function() {
+	var first = function(container){
+		let list = orderedElements(container);
+		return list && list.length>0 && list[0] || null;
+	};
+
+	var last = function(container) {
+		let list = orderedElements(container);
+		return list && list.length>0 && list[list.length-1] || null;
+	};
+
+	var forward = function(focusOption) {
 		if (!document.activeElement) return;
 
 		var target = next();
-		if (target && target!==currentFocus) target.focus();
+		if (target && target!==currentFocus) target.focus(focusOption||{});
 	};
 
-	var backward = function() {
+	var backward = function(focusOption) {
 		if (!currentFocus) return;
 
 		var target = previous();
-		if (target && target!==currentFocus) target.focus();
+		if (target && target!==currentFocus) target.focus(focusOption||{});
 	};
 
 	var next = function(element) {
@@ -391,7 +401,9 @@
 		backward: backward,
 		next: next,
 		previous: previous,
-		orderedElements: orderedElements
+		orderedElements: orderedElements,
+		first: first,
+		last: last
 	};
 	Object.defineProperty(window.focusManager,"currentlyFocused",{
 		get: function() {
