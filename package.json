@@ -1,6 +1,6 @@
 {
   "name": "focus-traversal-api-polyfill",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "the awesome engineering company",
   "license": "MIT",
   "contributors": [
@@ -11,9 +11,10 @@
     "tabbable": "4.0.0"
   },
   "devDependencies": {
-    "jsdoc-to-markdown": "4.0.1",
-    "mocha": "6.0.1",
-    "minify": "4.1.1"
+    "eslint": "5.16.0",
+    "jsdoc-to-markdown": "^5.0.0",
+    "minify": "4.1.1",
+    "mocha": "^6.1.4"
   },
   "optionalDependencies": {},
   "scripts": {
