@@ -1,14 +1,14 @@
-# The Case for a Revised Focus System
+# The Case for a New Focus System
 
-Twenty years ago or so I wrote my frist Web Application. Essentially a message board system it had no sembelence to a modern web application, of course, but it contained many of the features we see on modern applications even now.  Users could register, login, read messages, post messages, reply, etc. It was written in ColdFusion 1.5 and everything was backed to a Microsfot Access Database; ancient technology by any modern standards.
+Twenty years ago I wrote my frist Web Application. Essentially a message board system it had no sembelence to a modern web application, of course, but it contained many of the features we see on modern applications even now.  Users could register, login, read messages, post messages, reply, etc. It was written in ColdFusion 1.5 and everything was backed to a Microsfot Access Database; ancient technology by any modern standards.
 
 The reason for this personal memory reflection is to illustarate a specific problem I had back then, a specific problem that we as web developers still face today: **Focus**.
 
-See, in my nascent Web Application there was a login form: standard username and password and submit button thing we have today. And I wanted the user to be able to type their username, press ENTER to move to the next field, type their password, and press ENTER to submit.  This field advancement behavior mimiced they way the logged into their network accounts at the time. This meant turning to JavaScript: a language and concept just in it infancy.
+See, in my nascent Web Application there was a login form: standard username and password and submit button thing we have today. And I wanted the user to be able to type their username, press ENTER to move to the next field, type their password, and press ENTER to submit.  This field advancement behavior mimiced they way the logged into their network accounts at the time. This meant turning to JavaScript: a language and concept just in its infancy.
 
-The need was to notice when someone pressed the ENTER key while in the currently focused field. When that occured, we wanted to advance the focus to next field. Simple, right?
+The need was to notice when someone pressed the ENTER key while in the currently focused field. When that occured, I wanted to advance the focus to next field. Simple, right?
 
-Move the clock forward some twenty years.  I am building a web application for my new company and, of course, it has a login form with a username, password, and submit button.  And, of course, I want to advance the focus when someone presses ENTER.  It should come as no surprise but twenty plus years later and I have the exact same problem to solve. Instead, the surprising bit is that twenty years later, it still has the same solution:
+Move the clock forward some twenty years.  I am building a web application for my new company and, of course, it has a login form with a username, password, and submit button.  And, of course, I want to advance the focus when someone presses ENTER.  It should come as no surprise but twenty years later and I have the exact same problem to solve. Instead, the surprising bit is that twenty years later, it still has the same solution:
 
 ```JavaScript
 var usernameField = form.querySelector("input[type=text]");
@@ -20,6 +20,8 @@ usernameField.addEventListener("keyup",function(event){
 ```
 
 ## The Current Focus API
+
+The history of our current focus system is pretty simple...
 
 In January of 1998 we get the [first formal specification of focus](https://www.w3.org/TR/REC-DOM-Level-1/level-one-html.html#method-focus) in the Document Object Model (DOM) Level 1 Specification.
 
@@ -39,7 +41,7 @@ Together these represent the state of the current focus system we have today. It
 
 ## The Problem with Focus Today
 
-There are two very specific problems with focus today...
+There are two very specific problems with our current focus system...
 
 1). **Determining if an element can receive the focus is extremely complicated.**  There are well defined rules in the [WHATWG HTML Specification (section 6.4)](https://html.spec.whatwg.org/multipage/interaction.html#focus) but specifications can be hard to read and getting this right has been a problem for many who have tried.  INPUT tags, Anchor tags, the `tabindex` attrbitues, ARIA attributes, etc., they all contribute to whether or not an element can receive focus; not to mention if an element SHOULD recieve focus.
 
@@ -57,7 +59,7 @@ Second, a means to move the focus forward or backward from some given element wi
 
 A handful of other convience methods are also extremely easy to do once we have `element.isFocusable()`. A means to get all of the focusable elements of the container, for example, with `focusManager.orderedElements(element)`.  Or even more simple would be to have a way to find what was last focused prior to the current focus such as `focusManager.previouslyFocused` or a history of focus changes such as `focusManager.history`.
 
-All of these new focus requirements are geared at making focus easier to use and easier to understand.  This in turn lends itself to creating more consistency for the users, which means easier to use and understand interfaces and happier customers for everyone.
+All of these new focus requirements are geared at making focus easier to use and easier to understand.  This in turn lends itself to creating more consistency for the users, which means easier and more understandable user interfaces and happier customers for everyone.
 
 With these new APIs, moving focus goes from the code we showed you above to
 
