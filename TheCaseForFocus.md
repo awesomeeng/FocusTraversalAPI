@@ -74,22 +74,22 @@ It's not a huge reduction in lines of code, but it is vastly superior in complex
 
 So, how do we make focus better, how do we make the things we discussed here a reality for all?
 
-To address the problems of focus once and for all requires a change to the HTML specification that is managed by the W3C. Unless you are one of the big three browser creators, the process to enact change within the standards is very difficult. Fortunately, the W3C knows that this can be difficult and it created the Web Incubator Community Group or WICG. This is an online community dedicated to discussing and promoting new ideas for the W3C to consider. THe WICG was created specifically for "everyday citizens" to propose and discuss changes to the W3C standards.
+To address the problems of focus once and for all requires a change to the HTML specification that is managed by the W3C. Unless you are one of the big three browser creators, the process to enact change within the standards is very difficult. Fortunately, the W3C knows that this can be difficult and it created the Web Incubator Community Group or WICG. This is an online community dedicated to discussing and promoting new ideas for the W3C to consider. The WICG was created specifically for "everyday citizens" to propose and discuss changes to the W3C standards.
 
-To that end the FocusTraversal API, which encapsualtes all of these focus related features offered in this article, was [proposed to the WICG](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) on March 13, 2019.
+To that end the FocusTraversal API, which encapsualtes all of the focus related features offered in this article, was [proposed to the WICG](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) on March 13, 2019.
 
-But the WICG is a very tiny microcosm and not a lot of people know it exists, even within the W3C standards body.  The WICG is the starting point for any [proposal](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427), but to really enact change you need community support.  And this is where you can help: the FocusTraversal API proposal will never be realized without a lot more support.  It needs further discussion in WICG; it needs outside promotion on twitter, reddit, and the like; and it need participation and issues on Github.
+But the WICG is a very tiny microcosm and not a lot of people know it exists, even within the W3C standards body.  The WICG is the starting point for any [proposal](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427), but to really enact change you need community support.  And this is where you can help: the FocusTraversal API proposal will never be realized without a lot more support.  It needs further discussion in WICG; it needs outside promotion on twitter, reddit, and the like; and it needs participation and issues on Github.
 
-We have gotten the ball rolling. We have written the [proposal](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) and a [polyfill](https://github.com/awesomeeng/FocusTraversalAPI) to demonstrate the ideas. Yet writing these thing is the easy part; spreading the word is the challenge.  If you want to help, and we are practially begging for help here, we need more engagement. We need discussion about the [proposal](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) on the WICG Discourse board; we need [participation in the Github](https://github.com/awesomeeng/FocusTraversalAPI) with issues and pulls and comments; and we need help spreading the word on twitter and reddit and blogs and the like.
+We have gotten the ball rolling. We have written the [PROPOSAL](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) and a more detailed [EXPLAINER](https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md). We have written a [POLYFILL](https://github.com/awesomeeng/FocusTraversalAPI) to demonstrate the ideas. Yet writing these thing is the easy part; spreading the word is the challenge.  If you want to help, and we are begging for help here, we need more engagement. We need discussion about the [proposal](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) on the WICG Discourse board; we need [participation in the Github](https://github.com/awesomeeng/FocusTraversalAPI) with issues and pulls and comments; and we need help spreading the word on twitter and reddit and blogs and the like.
 
 So, if you are willing to help, and we hope you are, please get involved, please spread the word, and please help us make focus easier to use for everyone.
 
 ## More Information
 
- - FocusTraversal API on Github: [https://github.com/awesomeeng/FocusTraversalAPI](https://github.com/awesomeeng/FocusTraversalAPI)
+ - PROPOSAL: [https://discourse.wicg.io/t/proposal-focus-traversal-api/3427](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427)
 
- - WICG Proposal Discourse: [https://discourse.wicg.io/t/proposal-focus-traversal-api/3427](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427)
+ - EXPLAINER: [https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md](https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md)
 
- - Detailed Explainer: [https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md](https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md)
+ - POLYFILL: [https://github.com/awesomeeng/FocusTraversalAPI](https://github.com/awesomeeng/FocusTraversalAPI)
 
- - Polyfill: [https://github.com/awesomeeng/FocusTraversalAPI](https://github.com/awesomeeng/FocusTraversalAPI)
+ - GITHUB: [https://github.com/awesomeeng/FocusTraversalAPI](https://github.com/awesomeeng/FocusTraversalAPI)
