@@ -1,6 +1,6 @@
 # The Case for a Revised Focus System
 
-Twenty years ago or so I wrote my frist Web Application. Essentially a message board system it had no sembelence to a modern web application, of course, but it contained many of the features we see on modern applications even now.  Users could register, login, read messages, post message, reply, etc. It was written in ColdFusion 1.5 and everything was backed to a Microsfot Access Database; ancient technology by any modern standards.
+Twenty years ago or so I wrote my frist Web Application. Essentially a message board system it had no sembelence to a modern web application, of course, but it contained many of the features we see on modern applications even now.  Users could register, login, read messages, post messages, reply, etc. It was written in ColdFusion 1.5 and everything was backed to a Microsfot Access Database; ancient technology by any modern standards.
 
 The reason for this personal memory reflection is to illustarate a specific problem I had back then, a specific problem that we as web developers still face today: **Focus**.
 
@@ -19,7 +19,7 @@ usernameField.addEventListener("keyup",function(event){
 });
 ```
 
-## Focus Today
+## The Current Focus API
 
 In January of 1998 we get the [first formal specification of focus](https://www.w3.org/TR/REC-DOM-Level-1/level-one-html.html#method-focus) in the Document Object Model (DOM) Level 1 Specification.
 
@@ -37,7 +37,7 @@ Still later we get a few more small focus additions.
 
 Together these represent the state of the current focus system we have today. It's adequate, it gets the job done, but it could be, **it should be** so much more.
 
-## The Problem with Focus
+## The Problem with Focus Today
 
 There are two very specific problems with focus today...
 
@@ -64,7 +64,7 @@ With these new APIs, moving focus goes from the code we showed you above to
 ```javascript
 form.querySelector("input[type=text]").addEventListener("keyup",function(event){
 	if (event.code!=="Enter") return;
-	focusTraversal.forward();
+	focusManager.forward();
 });
 ```
 
@@ -74,14 +74,22 @@ It's not a huge reduction in lines of code, but it is vastly superior in complex
 
 So, how do we make focus better, how do we make the things we discussed here a reality for all?
 
-It begins with the WICG, the W3C's Web Incubator Community Group. This is an online community dedicated to discussing and promoting new ideas for the W3C to consider. The FocusTraversal API, which encapsualtes all of these focus related features, was proposed to the WICG and can be found here: [https://discourse.wicg.io/t/proposal-focus-traversal-api/3427](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427)
+To address the problems of focus once and for all requires a change to the HTML specification that is managed by the W3C. Unless you are one of the big three browser creators, the process to enact change within the standards is very difficult. Fortunately, the W3C knows that this can be difficult and it created the Web Incubator Community Group or WICG. This is an online community dedicated to discussing and promoting new ideas for the W3C to consider. THe WICG was created specifically for "everyday citizens" to propose and discuss changes to the W3C standards.
 
-Also, an explainer was written and contains most of the same requirements as this article.  It can be found here: [https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md](https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md).
+To that end the FocusTraversal API, which encapsualtes all of these focus related features offered in this article, was [proposed to the WICG](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) on March 13, 2019.
 
-Finally, a polyfill of these features has already been implemented for you to play with and start using.  It can be found here: [https://github.com/awesomeeng/FocusTraversalAPI](https://github.com/awesomeeng/FocusTraversalAPI)
+But the WICG is a very tiny microcosm and not a lot of people know it exists, even within the W3C standards body.  The WICG is the starting point for any [proposal](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427), but to really enact change you need community support.  And this is where you can help: the FocusTraversal API proposal will never be realized without a lot more support.  It needs further discussion in WICG; it needs outside promotion on twitter, reddit, and the like; and it need participation and issues on Github.
 
-All of these avenues for a better focus system need your input. They need your help to understand edge cases and they need your support to spread the word and gain traction.  Without your involvement, focus will remain were it is, languishing in the basement of other twenty year old systems. Let's make it better, let's change the web for everyone.
+We have gotten the ball rolling. We have written the [proposal](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) and a [polyfill](https://github.com/awesomeeng/FocusTraversalAPI) to demonstrate the ideas. Yet writing these thing is the easy part; spreading the word is the challenge.  If you want to help, and we are practially begging for help here, we need more engagement. We need discussion about the [proposal](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) on the WICG Discourse board; we need [participation in the Github](https://github.com/awesomeeng/FocusTraversalAPI) with issues and pulls and comments; and we need help spreading the word on twitter and reddit and blogs and the like.
 
-Please, login to the WICG [discourse](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) and offer a comment, suggest a feature, or even just give us a thumbs up or a star. Tweet about the proposal if you can. Everything helps.
+So, if you are willing to help, and we hope you are, please get involved, please spread the word, and please help us make focus easier to use for everyone.
 
-Thank you.
+## More Information
+
+ - FocusTraversal API on Github: [https://github.com/awesomeeng/FocusTraversalAPI](https://github.com/awesomeeng/FocusTraversalAPI)
+
+ - WICG Proposal Discourse: [https://discourse.wicg.io/t/proposal-focus-traversal-api/3427](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427)
+
+ - Detailed Explainer: [https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md](https://github.com/awesomeeng/FocusTraversalAPI/blob/master/EXPLAINER.md)
+
+ - Polyfill: [https://github.com/awesomeeng/FocusTraversalAPI](https://github.com/awesomeeng/FocusTraversalAPI)
