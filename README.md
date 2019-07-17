@@ -45,6 +45,10 @@ You may now use the focusManager as described in the section below.
 
 > `window.focusManager.historyLimit` - A number indicating how may focus history events should be retained. Defaults to 50.
 
+> `window.focusManager.isFocusable(element)` - Returns true if the given element can receive focus.
+
+> `window.focusManager.hasFocusable(element)` - Returns true if the given element currently has the focus.
+
 > `window.focusManager.focus(element,focusOption)` - Focus on the given element. Functionally the same as `element.focus()`. Returns void.
 
 > `window.focusManager.forward(focusOption)` - Move the focus to the next focusable element.  Returns void.

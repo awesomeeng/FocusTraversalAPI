@@ -4,7 +4,7 @@ This is a proposed feature that would allow an author to better understand and m
 
 ## The Problem
 
-The current system for programmatically manipulating focus within a web page leaves a lot to be desired. A single element can request the focus with the `focus()` method but that is the extent of the programatic focus navigation options.  Advancing the focus to the next focusable element or the previous focusable element involves a complex dance of DOM traversal and guess work as to what elements can recieve focus or not.  Most solutions to manipulating focus are complicated; the very simple need to manipulate focus in a meaningful and accessable manner is significantly lacking.
+The current system for programmatically manipulating focus within a web page leaves a lot to be desired. A single element can request the focus with the `focus()` method but that is the extent of the programatic focus navigation options.  Advancing the focus to the next focusable element or the previous focusable element involves a complex dance of DOM traversal and guess work as to what elements can receive focus or not.  Most solutions to manipulating focus are complicated; the very simple need to manipulate focus in a meaningful and accessable manner is significantly lacking.
 
 #### Focusable
 
@@ -80,7 +80,7 @@ Also, this proposal is currently unsure about how this would interact with an `<
 
 > `window.focusManager.historyLimit` - A number indicating how may focus history events should be retained. Defaults to 50.
 
-> `window.focusManager.isFocusable(element)` - Returns true if the given element can recieve focus.
+> `window.focusManager.isFocusable(element)` - Returns true if the given element can receive focus.
 
 > `window.focusManager.hasFocusable(element)` - Returns true if the given element currently has the focus.
 
@@ -90,15 +90,15 @@ Also, this proposal is currently unsure about how this would interact with an `<
 
 > `window.focusManager.backward(focusOption)` - Move the focus to the previous focusable element.  Returns void.
 
-> `window.focusManager.next(element)` - Returns the element that would revieve the focus if `window.focusManager.forward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
+> `window.focusManager.next(element)` - Returns the element that would receive the focus if `window.focusManager.forward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
 
-> `window.focusManager.previous(element)` - Returns the element that would revieve the focus if `window.focusManager.backward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
+> `window.focusManager.previous(element)` - Returns the element that would receive the focus if `window.focusManager.backward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
 
 > `window.focusManager.orderedElements(container)` - Returns an array of all focusable elements in the order that focus traversal would occur. If container is provided and a valid HTMLElement, this would limit the results to only the children of the given container. If no container is provided, the current document is used as the container.
 
-> `window.focusManager.first(container)` - Returns the first element that would recieve focus for the given container, or the current document if no container is provided.
+> `window.focusManager.first(container)` - Returns the first element that would receive focus for the given container, or the current document if no container is provided.
 
-> `window.focusManager.last(container)` - Returns the first element that would recieve focus for the given container, or the current document if no container is provided.
+> `window.focusManager.last(container)` - Returns the first element that would receive focus for the given container, or the current document if no container is provided.
 
 ## Status
 
@@ -115,4 +115,4 @@ An example implementation of the above as well as this document can be found at 
 
 ## Similar Works
 
- - https://github.com/davidtheclark/tabbable - A very popular library for getting a list of all the elements in a element that can recieve the focus.
+ - https://github.com/davidtheclark/tabbable - A very popular library for getting a list of all the elements in a element that can receive the focus.
