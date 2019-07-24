@@ -29,7 +29,7 @@
 	};
 	dom.forwardList = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		let elements = [];
+		var elements = [];
 		while (element && element!==document.body.parentElement) {
 			elements.push(element);
 			element = dom.forward(element,delveShadow);
@@ -38,7 +38,7 @@
 	};
 	dom.backwardList = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		let elements = [];
+		var elements = [];
 		while (element && element!==document.body.parentElement) {
 			elements.push(element);
 			element = dom.backward(element,delveShadow);
@@ -113,7 +113,7 @@
 	dom.ancestors = function(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 		var ansc = [];
-		let e = element;
+		var e = element;
 		while (e) {
 			ansc.unshift(e);
 			e = dom.up(e,delveShadow);
@@ -328,17 +328,17 @@
 	};
 
 	var first = function(container){
-		let list = orderedElements(container);
+		var list = orderedElements(container);
 		return list && list.length>0 && list[0] || null;
 	};
 
 	var last = function(container) {
-		let list = orderedElements(container);
+		var list = orderedElements(container);
 		return list && list.length>0 && list[list.length-1] || null;
 	};
 
 	var forward = function(focusOption) {
-		if (!document.activeElement) return;
+		if (!currentFocus) return;
 
 		var target = next();
 		if (target && target!==currentFocus) target.focus(focusOption||{});
