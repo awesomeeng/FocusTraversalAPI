@@ -13,6 +13,12 @@ An EXPLAINER is provided for a more detailed overview on why this is needed. You
  - History of the last n focus holders.
  - Works on all modern browsers including Internet Explorer 9 or later.
 
+## Get Involved
+
+We are always looking for people to get involved with the Focus Traversal API and proposal. Please consider helping us by spreading the word, commenting on the proposal, or participating in this repo!
+
+Check out our [GETTING INVOLVED page](./GET_INVOLVED.md) for more details on how you can help!
+
 ## Usage
 
 Install from npm...
