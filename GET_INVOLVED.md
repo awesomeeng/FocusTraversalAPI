@@ -12,6 +12,8 @@ Make sure to use the hashtag [#FocusTraversalAPI](https://twitter.com/search?q=%
 
 You can comment in either the [WICG W3C Proposal Submission discourse](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427), or the [WHATWG Github Issue](https://github.com/whatwg/html/issues/4784). Even a thumbs up helps!
 
+Also, google has an incubator system for additions to chromium to which a ticket was submitted: https://bugs.chromium.org/p/chromium/issues/detail?id=997446
+
 #### Download the Polyfill and use it
 
 The more people [use the polyfill](./README.md#focus-traversal-api), the more issues we can find, and the more solid our proposal becomes.
