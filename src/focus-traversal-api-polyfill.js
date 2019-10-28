@@ -432,7 +432,7 @@
 	 * @param  {Array|HTMLElement|Number} element
 	 * @return {void}
 	 */
-	var order = function order(element/*,element,element,etc*/) {
+	var order = function order(/*element,element,element,etc*/) {
 		var pos = null;
 		var elements = arrayhelp.flatten(arguments);
 		elements.forEach(function(e){
@@ -489,7 +489,7 @@
 	 */
 	var unproxy = function unproxy(source,target) {
 		proxies = proxies.filter(function(p){
-			if (p.source===source && p.target) {
+			if (p.source===source && p.target===target) {
 				if (p.sourceTabIndex!==null) source.setAttribute("tabindex",p.sourceTabIndex);
 				else source.removeAttribute("tabindex");
 				return false;
