@@ -28,7 +28,7 @@ A rough example of this API might be the following:
 
 `window.focusManager.previous(element)` - Returns the element that would revieve the focus if `window.focusManager.backward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
 
-`window.focusManager.orderedElements()` - Returns an array of all focusable elements in the order that focus traversal would occur.
+`window.focusManager.list()` - Returns an array of all focusable elements in the order that focus traversal would occur.
 
 ## Illustrative User Issues
 

@@ -100,7 +100,7 @@
 				removeHighlight();
 				undoButtonFocus();
 
-				var elements = focusManager.orderedElements();
+				var elements = focusManager.list();
 				if (elements.length>0) focusManager.focus(elements[0]);
 			});
 
@@ -120,13 +120,13 @@
 				removeHighlight();
 				undoButtonFocus();
 
-				var elements = focusManager.orderedElements();
+				var elements = focusManager.list();
 				if (elements.length>0) focusManager.focus(elements[elements.length-1]);
 			});
 
 			list.addEventListener("click",function(event){
 				undoButtonFocus();
-				console.log(focusManager.orderedElements());
+				console.log(focusManager.list());
 			});
 
 			next.addEventListener("click",function(event){

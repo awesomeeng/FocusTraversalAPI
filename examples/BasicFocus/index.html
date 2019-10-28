@@ -53,13 +53,15 @@
 	</head>
 	<body>
 		<div class="container">
-			<div class="field">
-				<label for"t1">First Name</label>
-				<input type="text"></input>
-			</div>
-			<div class="field">
-				<label for"t1">Last Name</label>
-				<input type="text"></input>
+			<div class="traptest">
+				<div class="field">
+					<label for"t1">First Name</label>
+					<input type="text"></input>
+				</div>
+				<div class="field">
+					<label for"t1">Last Name</label>
+					<input type="text"></input>
+				</div>
 			</div>
 			<div class="field">
 				<label for"t1">Address 1</label>
@@ -88,15 +90,17 @@
 			</div>
 		</div>
 		<script>
-			let first = document.body.querySelector("#first");
-			let backward = document.body.querySelector("#backward");
-			let forward = document.body.querySelector("#forward");
-			let last = document.body.querySelector("#last");
-			let list = document.body.querySelector("#list");
-			let next = document.body.querySelector("#next");
-			let prev = document.body.querySelector("#prev");
+			var first = document.body.querySelector("#first");
+			var backward = document.body.querySelector("#backward");
+			var forward = document.body.querySelector("#forward");
+			var last = document.body.querySelector("#last");
+			var list = document.body.querySelector("#list");
+			var next = document.body.querySelector("#next");
+			var prev = document.body.querySelector("#prev");
+			let inputs = [...document.body.querySelectorAll("INPUT")];
+			focusManager.proxy(inputs[2],inputs[0]);
 
-			let removeHighlight = function() {
+			var removeHighlight = function() {
 				document.body.querySelectorAll("input").forEach(function(e){
 					e.className = "";
 				});
@@ -106,7 +110,7 @@
 				removeHighlight();
 				focusManager.focus(focusManager.previouslyFocused);
 
-				let elements = focusManager.orderedElements();
+				var elements = focusManager.list();
 				if (elements.length>0) focusManager.focus(elements[0]);
 			});
 
@@ -126,26 +130,26 @@
 				removeHighlight();
 				focusManager.focus(focusManager.previouslyFocused);
 
-				let elements = focusManager.orderedElements();
+				var elements = focusManager.list();
 				if (elements.length>0) focusManager.focus(elements[elements.length-1]);
 			});
 
 			list.addEventListener("click",async function(event){
 				focusManager.focus(focusManager.previouslyFocused);
-				console.log(await focusManager.orderedElements());
+				console.log(await focusManager.list());
 			});
 
 			next.addEventListener("click",function(event){
 				removeHighlight();
 				focusManager.focus(focusManager.previouslyFocused);
-				let target = focusManager.next();
+				var target = focusManager.next();
 				if (target) target.className = "highlight";
 			});
 
 			prev.addEventListener("click",function(event){
 				removeHighlight();
 				focusManager.focus(focusManager.previouslyFocused);
-				let target = focusManager.previous();
+				var target = focusManager.previous();
 				if (target) target.className = "highlight";
 			});
 		</script>

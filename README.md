@@ -63,7 +63,7 @@ You may now use the focusManager as described in the section below.
 
 > `window.focusManager.previous(element)` - Returns the element that would receive the focus if `window.focusManager.backward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
 
-> `window.focusManager.orderedElements(container)` - Returns an array of all focusable elements in the order that focus traversal would occur. If container is provided and a valid HTMLElement, this would limit the results to only the children of the given container. If no container is provided, the current document is used as the container.
+> `window.focusManager.list(container)` - Returns an array of all focusable elements in the order that focus traversal would occur. If container is provided and a valid HTMLElement, this would limit the results to only the children of the given container. If no container is provided, the current document is used as the container.
 
 > `window.focusManager.first(container)` - Returns the first element that would receive focus for the given container, or the current document if no container is provided.
 

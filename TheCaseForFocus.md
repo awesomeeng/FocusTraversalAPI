@@ -57,7 +57,7 @@ First and foremost, we need a call to determine if an element is focusable or no
 
 Second, a means to move the focus forward or backward from some given element without knowing what is before or after it.  This can take a form such as `focusManager.forward()` or `focusManager.backward()`. Additionally, while we are at it, a means to identify what is the next or previous focus of any given element should be easy to determine.  Something like `focusManager.next(element)` or `focusManager.previous(element)` that will return the next or previous element that could receive the focus.
 
-A handful of other convience methods are also extremely easy to do once we have `element.isFocusable()`. A means to get all of the focusable elements of the container, for example, with `focusManager.orderedElements(element)`.  Or even more simple would be to have a way to find what was last focused prior to the current focus such as `focusManager.previouslyFocused` or a history of focus changes such as `focusManager.history`.
+A handful of other convience methods are also extremely easy to do once we have `element.isFocusable()`. A means to get all of the focusable elements of the container, for example, with `focusManager.list(element)`.  Or even more simple would be to have a way to find what was last focused prior to the current focus such as `focusManager.previouslyFocused` or a history of focus changes such as `focusManager.history`.
 
 All of these new focus requirements are geared at making focus easier to use and easier to understand.  This in turn lends itself to creating more consistency for the users, which means easier and more understandable user interfaces and happier customers for everyone.
 

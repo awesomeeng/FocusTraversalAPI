@@ -50,7 +50,7 @@ As part of this proposal some additional conveinience methods and properties are
 
 `window.focusManager.focus(element,focusOption)` - Focus on the given element. Functionally the same as `element.focus()`. Returns void.
 
-`window.focusManager.orderedElements()` - Returns an array of all focusable elements in the order that focus traversal would occur.
+`window.focusManager.list()` - Returns an array of all focusable elements in the order that focus traversal would occur.
 
 ### Special Considerations
 
@@ -58,7 +58,7 @@ Some special cases occur to which this specification must be mindful:
 
  - ShadowDOM: It is proposed that the Focus Management API also delve into ShadowDOM elements when computing the next or previous focus. If an element has an attached ShadowDOM, it must be traversed in accordance with its contents and any `<slot>` elements.
 
- - In especially large DOM trees computing the next focus, previous focus, or the `orderedElements()` list could be significantly slow.  It is recommended that these functions be asyncrounous and return a Promise instead of syncronously blocking.
+ - In especially large DOM trees computing the next focus, previous focus, or the `list()` list could be significantly slow.  It is recommended that these functions be asyncrounous and return a Promise instead of syncronously blocking.
 
 ## Benefits
 
@@ -94,7 +94,7 @@ Also, this proposal is currently unsure about how this would interact with an `<
 
 > `window.focusManager.previous(element)` - Returns the element that would receive the focus if `window.focusManager.backward()` was called when the given element has the focus.  If no element is given, the currently focused element is used.
 
-> `window.focusManager.orderedElements(container)` - Returns an array of all focusable elements in the order that focus traversal would occur. If container is provided and a valid HTMLElement, this would limit the results to only the children of the given container. If no container is provided, the current document is used as the container.
+> `window.focusManager.list(container)` - Returns an array of all focusable elements in the order that focus traversal would occur. If container is provided and a valid HTMLElement, this would limit the results to only the children of the given container. If no container is provided, the current document is used as the container.
 
 > `window.focusManager.first(container)` - Returns the first element that would receive focus for the given container, or the current document if no container is provided.
 
