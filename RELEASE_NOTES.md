@@ -1,5 +1,13 @@
 # AwesomeComponenets Release Notes
 
+#### **Version 2.0.0**
+
+ - Adds `order()` method to programatically set the focus order of one or elements.
+ - Adds `trap()` and `untrap()` to control trapping focus into a given container.
+ - Adds `proxy()` and `unproxy()` to easily forward focus from one element to another.
+ - Renamed `orderedElements()` to `list()`.
+ - Fixes a bug in traversal that was preventing shadow elements from traversing backwards correctly.
+
 #### **Version 1.2.0**
 
  - Adds focusOption argument to focusManager.focus(), focusManager.forward() and focusManager.backward to align with element.focus.
