@@ -22,14 +22,13 @@
 
 	// Internal dom traversal functions
 	var dom = {};
-	window.glen = dom;
 
 	dom.forward = function forward(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 
 		var next = dom.next(element,delveShadow);
 		if (next) return dom.descend(next,delveShadow) || next;
-		else return dom.up(element,delveShadow);
+		return dom.up(element,delveShadow);
 	};
 	dom.backward = function backward(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
@@ -235,15 +234,24 @@
 	 * @param  {Object} focusOption
 	 * @return {void}
 	 */
-	var focus = function focus(element,focusOption) {
+	var focus = function focus(element,focusOption,immediately) {
 		if (!element || !(element instanceof Element)) return;
+		if (typeof focusOption==="boolean") {
+			immediately = focusOption;
+			focusOption = null;
+		}
 
 		if (pending) clearTimeout(pending);
 		pending = null;
 
-		pending = setTimeout(function(){
+		if (immediately===true) {
 			element.focus(focusOption||{});
-		},0);
+		}
+		else {
+			pending = setTimeout(function(){
+				element.focus(focusOption||{});
+			},0);
+		}
 	};
 
 	/**
@@ -311,7 +319,7 @@
 		if (!currentFocus) return;
 
 		var target = next();
-		if (target && target!==currentFocus) target.focus(focusOption||{});
+		if (target && target!==currentFocus) focus(target,focusOption||{});
 	};
 
 	/**
@@ -324,7 +332,7 @@
 		if (!currentFocus) return;
 
 		var target = previous();
-		if (target && target!==currentFocus) target.focus(focusOption||{});
+		if (target && target!==currentFocus) focus(target,focusOption||{});
 	};
 
 	/**
