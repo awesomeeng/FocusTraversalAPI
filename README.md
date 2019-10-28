@@ -69,6 +69,16 @@ You may now use the focusManager as described in the section below.
 
 > `window.focusManager.last(container)` - Returns the first element that would receive focus for the given container, or the current document if no container is provided.
 
+`window.focusManager.order(element,element,element,etc)` - Programatically set the traversal order of one or more elements. Given an array of elements (or multiple arguments) order them in the order they are given.
+
+`window.focusManager.trap()` - Trap focus within a given element, such that any focus event outside of the element's descendants will refocus the last focused element within the element's descendants. Traps calls stack, such that the latest trap always wins, but removing a trap will set th enext prior trap running.
+
+`window.focusManager.untrap()` - Removes a trap.
+
+`window.focusManager.proxy(source,target)` - When the given source element receives the focus, forward that focus immediately to the target element.
+
+`window.focusManager.unproxy(source,target)` - Removes a proxy.
+
 ## Issues
 
 If you would like to comment on the proposal, please [open an issue](https://github.com/awesomeeng/FocusTraversalAPI/issues).

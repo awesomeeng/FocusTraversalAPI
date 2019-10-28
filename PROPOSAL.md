@@ -30,6 +30,16 @@ A rough example of this API might be the following:
 
 `window.focusManager.list()` - Returns an array of all focusable elements in the order that focus traversal would occur.
 
+`window.focusManager.order(element,element,element,etc)` - Programatically set the traversal order of one or more elements. Given an array of elements (or multiple arguments) order them in the order they are given.
+
+`window.focusManager.trap()` - Trap focus within a given element, such that any focus event outside of the element's descendants will refocus the last focused element within the element's descendants. Traps calls stack, such that the latest trap always wins, but removing a trap will set th enext prior trap running.
+
+`window.focusManager.untrap()` - Removes a trap.
+
+`window.focusManager.proxy(source,target)` - When the given source element receives the focus, forward that focus immediately to the target element.
+
+`window.focusManager.unproxy(source,target)` - Removes a proxy.
+
 ## Illustrative User Issues
 
  - https://stackoverflow.com/questions/7208161/focus-next-element-in-tab-index
