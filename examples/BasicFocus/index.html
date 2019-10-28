@@ -53,15 +53,13 @@
 	</head>
 	<body>
 		<div class="container">
-			<div class="traptest">
-				<div class="field">
-					<label for"t1">First Name</label>
-					<input type="text"></input>
-				</div>
-				<div class="field">
-					<label for"t1">Last Name</label>
-					<input type="text"></input>
-				</div>
+			<div class="field">
+				<label for"t1">First Name</label>
+				<input type="text"></input>
+			</div>
+			<div class="field">
+				<label for"t1">Last Name</label>
+				<input type="text"></input>
 			</div>
 			<div class="field">
 				<label for"t1">Address 1</label>
@@ -97,8 +95,6 @@
 			var list = document.body.querySelector("#list");
 			var next = document.body.querySelector("#next");
 			var prev = document.body.querySelector("#prev");
-			let inputs = [...document.body.querySelectorAll("INPUT")];
-			focusManager.proxy(inputs[2],inputs[0]);
 
 			var removeHighlight = function() {
 				document.body.querySelectorAll("input").forEach(function(e){

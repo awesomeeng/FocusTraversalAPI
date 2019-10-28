@@ -22,6 +22,8 @@
 
 	// Internal dom traversal functions
 	var dom = {};
+	window.glen = dom;
+
 	dom.forward = function forward(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
 
@@ -31,21 +33,16 @@
 	};
 	dom.backward = function backward(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		var prev = dom.last(element,delveShadow);
-		if (prev) return prev;
-		else {
-			prev = dom.prev(element,delveShadow);
-			if (prev) return prev;
-
-			prev = element;
-			while (true) {
-				var up = dom.up(prev,delveShadow);
-				if (!up || up===document.body.parentElement) return null;
-				prev = dom.prev(up,delveShadow);
-				if (prev && prev!==document.body.parentElement && prev!==document.head) return prev;
-				prev = up;
-			}
+		if (element===document.body) return null;
+		var prev = dom.prev(element,delveShadow);
+		if (prev) return dom.descendLast(prev,delveShadow) || prev;
+		var up = dom.up(element,delveShadow);
+		if (up===document.body.parentElement || up===document.head) return null;
+		if (!element.parentElement) {
+			var sib = up.lastElementChild;
+			if (sib) return dom.descendLast(sib,delveShadow) || sib;
 		}
+		return up;
 	};
 	dom.forwardList = function forwardList(element,delveShadow) {
 		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
@@ -166,12 +163,15 @@
 	 * In the meantime, this polyfill implementation is doing the best it can. Please let
 	 * us know if you find edge cases that dont work.
 	 *
+	 * If the given element is null or undefined or not otherwise an instance of
+	 * HTMLElement, this function will always return false.
+	 *
 	 * @param  {HTMLElement}  element
 	 * @return {Boolean}
 	 */
 	var isFocusable = function isFocusable(element) {
-		if (!element) throw new Error("Missing element argument.");
-		if (!(element instanceof HTMLElement)) throw new Error("Invalid element argument.");
+		if (!element) return false;
+		if (!(element instanceof HTMLElement)) return false;
 
 		// these rules apply to the element and all its ancestors...
 		var all = dom.ancestors(element).reverse();
@@ -202,8 +202,8 @@
 
 		// if tabindex is -1, no focusable.
 		var ti = element.getAttribute("tabindex") || null;
-		ti = ti && parseInt(ti) || null;
-		if (ti!==null && ti===-1) return false;
+		ti = ti && +ti;
+		if (ti!==null && ti<0) return false;
 		if (ti!==null && ti>=0) return true;
 
 		// anything disabled is not focusable
@@ -226,15 +226,17 @@
 
 	/**
 	 * Sets the focus to the given element. This is functionally equivalent to doing
-	 * `element.focus()`.  Note that the browser does not garauntee that the focus will
-	 * be set t the given element; this is is purely a request.
+	 * `element.focus()`. If no element is given, nothing will happen.
+	 *
+	 * Note that the browser does not garauntee that the focus will
+	 * be set to the given element; this is is purely a request.
 	 *
 	 * @param  {HTMLElement} element
 	 * @param  {Object} focusOption
 	 * @return {void}
 	 */
 	var focus = function focus(element,focusOption) {
-		if (!element || !(element instanceof Element)) throw new Error("Missing element argument.");
+		if (!element || !(element instanceof Element)) return;
 
 		if (pending) clearTimeout(pending);
 		pending = null;
@@ -380,13 +382,13 @@
 	 * @return {void}
 	 */
 	var trap = function trap(container) {
-		if (!container) throw new Error("Missing container argument.");
-		if (!(container instanceof HTMLElement)) throw new Error("Invalid container argument.");
+		if (!container) return;
+		if (!(container instanceof HTMLElement)) return;
 
 		var existing = traps.map(function(detail){
 			return detail.container;
 		});
-		if (existing.indexOf(container)>-1) throw new Error("Trap already in place on this element.");
+		if (existing.indexOf(container)>-1) return;
 
 		var detail = {
 			container: container,
@@ -405,8 +407,8 @@
 	 * @return {void}
 	 */
 	var untrap = function untrap(container) {
-		if (!container) throw new Error("Missing container argument.");
-		if (!(container instanceof HTMLElement)) throw new Error("Invalid container argument.");
+		if (!container) return;
+		if (!(container instanceof HTMLElement)) return;
 
 		if (traps.length<1) return;
 
@@ -456,11 +458,11 @@
 	 * @return {void}
 	 */
 	var proxy = function proxy(source,target) {
-		if (!source) throw new Error("Missing source argument.");
-		if (!(source instanceof HTMLElement)) throw new Error("Invalid source argument.");
-		if (!target) throw new Error("Missing target argument.");
-		if (!(target instanceof HTMLElement)) throw new Error("Invalid target argument.");
-		if (!isFocusable(target)) throw new Error("Target argument must be focusable.");
+		if (!source) return;
+		if (!(source instanceof HTMLElement)) return;
+		if (!target) return;
+		if (!(target instanceof HTMLElement)) return;
+		if (!isFocusable(target)) return;
 
 		// clear any existing proxy
 		unproxy(source,target);
@@ -514,8 +516,10 @@
 
 			for (var i=0;i<proxies.length;i++) {
 				let p = proxies[i];
-				if (p.source===target) focus(p.target);
-				return;
+				if (p.source===target) {
+					focus(p.target);
+					return;
+				}
 			}
 		},true);
 		document.addEventListener("blur",function(event){
@@ -538,6 +542,19 @@
 			}
 
 			previousFocus = target;
+		},true);
+		document.addEventListener("keyup",function(event){
+			if (event.shiftKey && event.keyCode===9) {
+				var source = currentFocus;
+				for (var i=0;i<proxies.length;i++) {
+					let p = proxies[i];
+					if (p.source===source || p.target===source) {
+						focus(previous(p.source));
+						event.preventDefault();
+						return;
+					}
+				}
+			}
 		},true);
 	});
 
