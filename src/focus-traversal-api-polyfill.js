@@ -3,6 +3,8 @@
 (function (){
 	if (typeof window==="undefined" || window.focusManager) return;
 
+	var DT = window.DOMTraversal;
+
 	// array helpers
 	var flatten = function flatten(array) {
 		if (!array) throw new Error("Missing array.");
@@ -56,7 +58,7 @@
 		if (!(element instanceof HTMLElement)) return false;
 
 		// these rules apply to the element and all its ancestors...
-		var all = window.DOMTraversal.ancestors(element).reverse();
+		var all = DT.ancestors(element,true).reverse();
 		for (var i=0;i<all.length;i++) {
 			var e = all[i];
 			if (!e) continue;
@@ -159,7 +161,7 @@
 	 * @return {Array}
 	 */
 	var list = function list(container){
-		return window.DOMTraversal.forwardList(window.DOMTraversal.descend(container||document.body,true),true).filter(function(e){
+		return DT.forwardList(container||document.body,true).filter(function(e){
 			return isFocusable(e);
 		});
 	};
@@ -168,28 +170,34 @@
 	 * Returns the first focusable element in the given container. If no container is
 	 * provided `document.body` is assumed.
 	 *
-	 * Note that in very large DOM structures this can be a significantly expensive call.
-	 *
 	 * @param  {HTMLElement|null} container
 	 * @return {HTMLElement|null}
 	 */
 	var first = function first(container){
-		var elements = list(container);
-		return elements && elements.length>0 && elements[0] || null;
+		container = container || document.body;
+		var e = DT.bottom(container,true);
+		if (!e) return;
+		if (isFocusable(e)) return e;
+		e = next(e);
+		if (DT.contains(container,e,true)) return e;
+		return null;
 	};
 
 	/**
 	 * Returns the last focusable element in the given container. If no container is
 	 * provided `document.body` is assumed.
 	 *
-	 * Note that in very large DOM structures this can be a significantly expensive call.
-	 *
 	 * @param  {HTMLElement|null} container
 	 * @return {HTMLElement|null}
 	 */
 	var last = function last(container) {
-		var elements = list(container);
-		return elements && elements.length>0 && elements[elements.length-1] || null;
+		container = container || document.body;
+		var e = DT.bottomLast(container,true);
+		if (!e) return;
+		if (isFocusable(e)) return e;
+		e = previous(e);
+		if (DT.contains(container,e,true)) return e;
+		return null;
 	};
 
 	/**
@@ -231,10 +239,19 @@
 		if (!element || !(element instanceof Element)) return null;
 
 		while (element) {
-			element = window.DOMTraversal.forward(element,true);
-			if (element && isFocusable(element)) return element;
+			element = DT.forward(element,true);
+			if (element && isFocusable(element)) break;
 		}
-		return null;
+
+		for (var i=0;i<proxies.length;i++) {
+			let p = proxies[i];
+			if (p.source===element) {
+				element = p.target;
+				break;
+			}
+		}
+
+		return element;
 	};
 
 	/**
@@ -249,9 +266,19 @@
 		if (!element || !(element instanceof Element)) return null;
 
 		while (element) {
-			element = window.DOMTraversal.backward(element,true);
-			if (element && isFocusable(element)) return element;
+			element = DT.backward(element,true);
+			if (element && isFocusable(element)) break;
 		}
+
+		for (var i=0;i<proxies.length;i++) {
+			let p = proxies[i];
+			if (p.source===element) {
+				element = previous(p.source);
+				break;
+			}
+		}
+
+		return element;
 	};
 
 	/**
@@ -424,7 +451,7 @@
 			if (related) {
 				var trap = traps[0] || null;
 				if (trap && trap.last) {
-					var anc = window.DOMTraversal.ancestors(related);
+					var anc = DT.ancestors(related,true);
 					if (anc.indexOf(trap.container)<0) {
 						focus(trap.last);
 						return;

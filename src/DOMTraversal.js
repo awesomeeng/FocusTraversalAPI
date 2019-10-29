@@ -119,7 +119,7 @@
 
 		var e = element;
 		while (e = next(e,delveShadow)) {
-			if (!e || e===element || !element.contains(e)) break;
+			if (!e || e===element || !contains(element,e,delveShadow)) break;
 			elements.push(e);
 		}
 		return elements;
@@ -128,6 +128,16 @@
 	var backwardList = function backwardList(element,delveShadow) {
 		if (!element) throw new Error("Invalid element.");
 		return forwardList(element,delveShadow).reverse();
+	};
+
+	var contains = function contains(container,element,delveShadow) {
+		if (!container && !(container instanceof HTMLElement)) return false;
+		if (!element && !(element instanceof HTMLElement)) return false;
+
+		if (!delveShadow) return container.contains(element);
+
+		var ancs = ancestors(element,true);
+		return ancs.indexOf(container)>-1;
 	};
 
 	var dom = {
@@ -147,7 +157,8 @@
 		descendants: descendants,
 		ancestors: ancestors,
 		forwardList: forwardList,
-		backwardList: backwardList
+		backwardList: backwardList,
+		contains: contains
 	};
 
 	// can be used in node, mostly for testing

@@ -104,47 +104,47 @@
 
 			first.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 
-				var elements = focusManager.list();
-				if (elements.length>0) focusManager.focus(elements[0]);
+				var first = focusManager.first(document.body);
+				if (first) focusManager.focus(first);
 			});
 
 			backward.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 				focusManager.backward();
 			});
 
 			forward.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 				focusManager.forward();
 			});
 
 			last.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 
-				var elements = focusManager.list();
-				if (elements.length>0) focusManager.focus(elements[elements.length-1]);
+				var last = focusManager.last(document.body);
+				if (last) focusManager.focus(last);
 			});
 
-			list.addEventListener("click",async function(event){
-				focusManager.focus(focusManager.previouslyFocused);
-				console.log(await focusManager.list());
+			list.addEventListener("click",function(event){
+				focusManager.focus(focusManager.previouslyFocused,true);
+				console.log(focusManager.list());
 			});
 
 			next.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 				var target = focusManager.next();
 				if (target) target.className = "highlight";
 			});
 
 			prev.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 				var target = focusManager.previous();
 				if (target) target.className = "highlight";
 			});
