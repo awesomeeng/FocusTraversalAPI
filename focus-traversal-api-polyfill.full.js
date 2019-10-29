@@ -73,8 +73,8 @@
 		var sib = element.previousElementSibling;
 		if (sib) return bottomLast(sib,delveShadow);
 
-		var sc = delveShadow && element.shadowRoot && element.shadowRoot.lastElementChild || null;
-		if (sc) return bottom(sc,delveShadow);
+		var sc = delveShadow && !element.parentElement && element.parentNode && element.parentNode instanceof DocumentFragment && element.parentNode.host || null;
+		if (sc && sc.lastElementChild) return bottom(sc.lastElementChild,delveShadow);
 
 		var u = up(element,delveShadow);
 		return u;
@@ -85,13 +85,13 @@
 
 		var desc = [];
 
-		let children = Array.prototype.slice.call(element.children);
+		var children = Array.prototype.slice.call(element.children);
 		children.forEach(function(c){
 			desc = desc.concat(c,descendants(c,delveShadow));
 		});
 
 		if (delveShadow && element.shadowRoot) {
-			let shadows = Array.prototype.slice.call(element.shadowRoot.children);
+			var shadows = Array.prototype.slice.call(element.shadowRoot.children);
 			shadows.forEach(function(c){
 				desc = desc.concat(c,descendants(c,delveShadow));
 			});

@@ -23,7 +23,8 @@
     "docs": "jsdoc2md src/** --separators > docs/API.md",
     "test": "mocha test",
     "tests": "mocha test",
-    "minify": "cat src/DOMTraversal.js src/focus-traversal-api-polyfill.js > focus-traversal-api-polyfill.full.js && minify focus-traversal-api-polyfill.full.js > focus-traversal-api-polyfill.min.js"
+    "minify": "cat src/DOMTraversal.js src/focus-traversal-api-polyfill.js > focus-traversal-api-polyfill.full.js && minify focus-traversal-api-polyfill.full.js > focus-traversal-api-polyfill.min.js",
+	"dev": "nodemon -w src --exec \"npm run minify && node /mnt/c/DEV/Awesome/Code/zephjs/src/cli/CLI.js serve\""
   },
   "description": "Focus Traversal API polyfill.",
   "directories": {
