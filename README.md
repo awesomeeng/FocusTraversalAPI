@@ -2,7 +2,7 @@
 
 The Focus Traversal API is a proposed change to the W3C/wHATWG HTML Specification for making working with Browser UI Focus more useful and more powerful.  The proposal has been brought to the [W3C WICG](https://discourse.wicg.io/t/proposal-focus-traversal-api/3427) and the [WHATWG](https://github.com/whatwg/html/issues/4784) for discussion and hopefully implementation and is currently in the discussion phase within both communities. If you would like more details about the proposal, an EXPLAINER is provided at: [EXPLAINER](./EXPLAINER.md)
 
-Additionally, a polyfill for the proposed additions can be found here to allow the community to try and demonstrate the usefulness of Focus Traversal and we encourage everyone to give it a try. This work is based on and includes the [Tabbable Library by David Clark](https://github.com/davidtheclark/tabbable).
+Additionally, a polyfill for the proposed additions can be found here to allow the community to try and demonstrate the usefulness of Focus Traversal and we encourage everyone to give it a try.
 
 Also, we are always looking for people to get involved with the Focus Traversal API and proposal. Please consider helping us by spreading the word, commenting on the proposal, or participating in this repo!
 
