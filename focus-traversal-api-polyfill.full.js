@@ -1,9 +1,172 @@
 (function (){
+	var first = function first(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+		return element.firstElementChild || delveShadow && element.shadowRoot && element.shadowRoot.firstElementChild || null;
+	};
+	var down = first;
+
+	var last = function last(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+		return delveShadow && element.shadowRoot && element.shadowRoot.lastElementChild || element.lastElementChild || null;
+	};
+	var downLast = last;
+
+	var up = function up(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+		return element.parentElement || delveShadow && element.parentNode instanceof DocumentFragment && element.parentNode.host || null;
+	};
+
+	var top = function top(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+		while(true) {
+			var e = up(element,delveShadow);
+			if (!e) break;
+			element = e;
+		}
+		return element;
+	};
+
+	var bottom = function bottom(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+		while (true) {
+			var e = down(element,delveShadow);
+			if (!e) break;
+			element = e;
+		}
+		return element;
+	};
+
+	var bottomLast = function bottomLast(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+		while (true) {
+			var e = downLast(element,delveShadow);
+			if (!e) break;
+			element = e;
+		}
+		return element;
+	};
+
+	var next = function next(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+
+		var c = element.firstElementChild || null;
+		if (c) return c;
+
+		var sc = delveShadow && element.shadowRoot && element.shadowRoot.firstElementChild || null;
+		if (sc) return element.shadowRoot.firstElementChild;
+
+		var sib = element.nextElementSibling || null;
+		if (sib) return sib;
+
+		var e = element;
+		while (e = up(e,delveShadow)) {
+			if (!e || e===element) return null;
+
+			var sib = e.nextElementSibling;
+			if (sib) return sib;
+		}
+	};
+
+	var prev = function prev(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+
+		var sib = element.previousElementSibling;
+		if (sib) return bottomLast(sib,delveShadow);
+
+		var sc = delveShadow && element.shadowRoot && element.shadowRoot.lastElementChild || null;
+		if (sc) return bottom(sc,delveShadow);
+
+		var u = up(element,delveShadow);
+		return u;
+	};
+
+	var descendants = function descendants(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+
+		var desc = [];
+
+		let children = Array.prototype.slice.call(element.children);
+		children.forEach(function(c){
+			desc = desc.concat(c,descendants(c,delveShadow));
+		});
+
+		if (delveShadow && element.shadowRoot) {
+			let shadows = Array.prototype.slice.call(element.shadowRoot.children);
+			shadows.forEach(function(c){
+				desc = desc.concat(c,descendants(c,delveShadow));
+			});
+		}
+
+		return desc;
+	};
+
+	var ancestors = function ancestors(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+
+		var ansc = [];
+		var e = element;
+		while (e) {
+			e = up(e,delveShadow);
+			if (!e) break;
+			ansc.push(e);
+		}
+		return ansc;
+	};
+
+	var forwardList = function forwardList(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+		var elements = [];
+
+		var e = element;
+		while (e = next(e,delveShadow)) {
+			if (!e || e===element || !element.contains(e)) break;
+			elements.push(e);
+		}
+		return elements;
+	};
+
+	var backwardList = function backwardList(element,delveShadow) {
+		if (!element) throw new Error("Invalid element.");
+		return forwardList(element,delveShadow).reverse();
+	};
+
+	var dom = {
+		first: first,
+		last: last,
+		up: up,
+		down: first,
+		downLast: last,
+		next: next,
+		forward: next,
+		prev: prev,
+		previous: prev,
+		backward: prev,
+		top: top,
+		bottom: bottom,
+		bottomLast: bottomLast,
+		descendants: descendants,
+		ancestors: ancestors,
+		forwardList: forwardList,
+		backwardList: backwardList
+	};
+
+	// can be used in node, mostly for testing
+	if (typeof module!=="undefined" && module && module.exports) {
+		module.exports = dom;
+	}
+
+	// creates window.DOMTraversal for usage in browsers.
+	if (typeof window!=="undefined" && window) {
+		window.DOMTraversal = window.DOMTraversal || dom;
+	}
+})();
+// requires DOMTraversal.
+
+(function (){
 	if (typeof window==="undefined" || window.focusManager) return;
 
 	// array helpers
-	var arrayhelp = {};
-	arrayhelp.flatten = function flatten(array) {
+	var flatten = function flatten(array) {
 		if (!array) throw new Error("Missing array.");
 		if (!(array instanceof Array)) array = Array.prototype.slice.call(array);
 
@@ -18,124 +181,6 @@
 			}
 			return array;
 		},[]);
-	};
-
-	// Internal dom traversal functions
-	var dom = {};
-
-	dom.forward = function forward(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-
-		var next = dom.next(element,delveShadow);
-		if (next) return dom.descend(next,delveShadow) || next;
-		return dom.up(element,delveShadow);
-	};
-	dom.backward = function backward(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		if (element===document.body) return null;
-		var prev = dom.prev(element,delveShadow);
-		if (prev) return dom.descendLast(prev,delveShadow) || prev;
-		var up = dom.up(element,delveShadow);
-		if (up===document.body.parentElement || up===document.head) return null;
-		if (!element.parentElement) {
-			var sib = up.lastElementChild;
-			if (sib) return dom.descendLast(sib,delveShadow) || sib;
-		}
-		return up;
-	};
-	dom.forwardList = function forwardList(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		var elements = [];
-		while (element && element!==document.body.parentElement) {
-			elements.push(element);
-			element = dom.forward(element,delveShadow);
-		}
-		return elements;
-	};
-	dom.backwardList = function backwardList(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		var elements = [];
-		while (element && element!==document.body.parentElement) {
-			elements.push(element);
-			element = dom.backward(element,delveShadow);
-		}
-		return elements;
-	};
-	dom.first = function first(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		return element.firstElementChild || delveShadow && element.shadowRoot && element.shadowRoot.firstElementChild || null;
-	};
-	dom.last = function last(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		return delveShadow && element.shadowRoot && element.shadowRoot.lastElementChild || element.lastElementChild || null;
-	};
-	dom.up = function up(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		return element.parentElement || delveShadow && element.parentNode instanceof DocumentFragment && element.parentNode.host || null;
-	};
-	dom.down = dom.first;
-	dom.downLast = dom.last;
-	dom.next = function next(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		if (!delveShadow) {
-			return element.nextElementSibling;
-		}
-		else {
-			var next = element.nextElementSibling;
-			if (next) return next;
-			else {
-				var parent = element.parentElement;
-				if (parent && element.parentNode instanceof DocumentFragment && element.parentNode.shadowRoot) return element.parentNode.shadowRoot.firstElementChild;
-				return null;
-			}
-		}
-	};
-	dom.prev = function prev(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		if (!delveShadow) {
-			return element.previousElementSibling;
-		}
-		else {
-			var parent = element.parentElement;
-			if (parent && element.parentNode instanceof DocumentFragment && element.parentNode.shadowRoot) return element.parentNode.shadowRoot.lastElementChild;
-			else return element.previousElementSibling;
-		}
-	};
-	dom.ascend = function ascend(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		while(dom.up(element,delveShadow)) element = dom.up(element,delveShadow);
-		return element;
-	};
-	dom.descend = function descend(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		while (dom.down(element,delveShadow)) element = dom.down(element,delveShadow);
-		return element;
-	};
-	dom.descendLast = function descendLast(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		while (dom.downLast(element,delveShadow)) element = dom.downLast(element,delveShadow);
-		return element;
-	};
-	dom.descendants = function descendants(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		var desc = [];
-		var e = dom.deepest(element,delveShadow);
-		while (e && e!==element) {
-			desc.push(e);
-			e = dom.forward(e,delveShadow);
-		}
-		return desc;
-	};
-	dom.ancestors = function ancestors(element,delveShadow) {
-		if (!element && !(element instanceof Node)) throw new Error("Invalid element.");
-		var ansc = [];
-		var e = element;
-		while (e) {
-			ansc.unshift(e);
-			e = dom.up(e,delveShadow);
-			if (!e || e===document.body.parentElement) break;
-		}
-		return ansc;
 	};
 
 	var history = [];
@@ -173,7 +218,7 @@
 		if (!(element instanceof HTMLElement)) return false;
 
 		// these rules apply to the element and all its ancestors...
-		var all = dom.ancestors(element).reverse();
+		var all = window.DOMTraversal.ancestors(element).reverse();
 		for (var i=0;i<all.length;i++) {
 			var e = all[i];
 			if (!e) continue;
@@ -276,7 +321,7 @@
 	 * @return {Array}
 	 */
 	var list = function list(container){
-		return dom.forwardList(dom.descend(container||document.body,true),true).filter(function(e){
+		return window.DOMTraversal.forwardList(window.DOMTraversal.descend(container||document.body,true),true).filter(function(e){
 			return isFocusable(e);
 		});
 	};
@@ -348,7 +393,7 @@
 		if (!element || !(element instanceof Element)) return null;
 
 		while (element) {
-			element = dom.forward(element,true);
+			element = window.DOMTraversal.forward(element,true);
 			if (element && isFocusable(element)) return element;
 		}
 		return null;
@@ -366,7 +411,7 @@
 		if (!element || !(element instanceof Element)) return null;
 
 		while (element) {
-			element = dom.backward(element,true);
+			element = window.DOMTraversal.backward(element,true);
 			if (element && isFocusable(element)) return element;
 		}
 	};
@@ -442,7 +487,7 @@
 	 */
 	var order = function order(/*element,element,element,etc*/) {
 		var pos = null;
-		var elements = arrayhelp.flatten(arguments);
+		var elements = flatten(arguments);
 		elements.forEach(function(e){
 			if (typeof e==="number") {
 				pos = e;
@@ -541,7 +586,7 @@
 			if (related) {
 				var trap = traps[0] || null;
 				if (trap && trap.last) {
-					var anc = dom.ancestors(related);
+					var anc = window.DOMTraversal.ancestors(related);
 					if (anc.indexOf(trap.container)<0) {
 						focus(trap.last);
 						return;

@@ -8,13 +8,14 @@
   ],
   "main": "./polyfill/web-focus-api-polyfill.js",
   "dependencies": {
+    "jsdom": "^15.2.0",
     "tabbable": "4.0.0"
   },
   "devDependencies": {
     "eslint": "5.16.0",
-    "jsdoc-to-markdown": "^5.0.0",
+    "jsdoc-to-markdown": "^5.0.2",
     "minify": "4.1.1",
-    "mocha": "^6.1.4"
+    "mocha": "^6.2.2"
   },
   "optionalDependencies": {},
   "scripts": {
@@ -22,7 +23,7 @@
     "docs": "jsdoc2md src/** --separators > docs/API.md",
     "test": "mocha test",
     "tests": "mocha test",
-    "minify": "cp src/focus-traversal-api-polyfill.js focus-traversal-api-polyfill.full.js && minify src/focus-traversal-api-polyfill.js > focus-traversal-api-polyfill.min.js"
+    "minify": "cat src/DOMTraversal.js src/focus-traversal-api-polyfill.js > focus-traversal-api-polyfill.full.js && minify focus-traversal-api-polyfill.full.js > focus-traversal-api-polyfill.min.js"
   },
   "description": "Focus Traversal API polyfill.",
   "directories": {
