@@ -59,10 +59,11 @@
 		if (sib) return sib;
 
 		var e = element;
-		while (e = up(e,delveShadow)) {
+		while (true) {
+			e = up(e,delveShadow);
 			if (!e || e===element) return null;
 
-			var sib = e.nextElementSibling;
+			sib = e.nextElementSibling;
 			if (sib) return sib;
 		}
 	};
@@ -118,7 +119,9 @@
 		var elements = [];
 
 		var e = element;
-		while (e = next(e,delveShadow)) {
+		while (true) {
+			if (!e) break;
+			e = next(e,delveShadow);
 			if (!e || e===element || !contains(element,e,delveShadow)) break;
 			elements.push(e);
 		}
@@ -162,7 +165,9 @@
 	};
 
 	// can be used in node, mostly for testing
+	// eslint-disable-next-line no-undef
 	if (typeof module!=="undefined" && module && module.exports) {
+		// eslint-disable-next-line no-undef
 		module.exports = dom;
 	}
 
