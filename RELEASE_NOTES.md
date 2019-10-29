@@ -7,6 +7,9 @@
  - Adds `proxy()` and `unproxy()` to easily forward focus from one element to another.
  - Renamed `orderedElements()` to `list()`.
  - Fixes a bug in traversal that was preventing shadow elements from traversing backwards correctly.
+ - DOMTraversal code broken out into a separate file and refactored. (This will move to a future project at some point.)
+ - Lots of bug fixes around focus and shadowroot behaviors.
+ - Revised next() and previous() behavior.
 
 #### **Version 1.2.0**
 
