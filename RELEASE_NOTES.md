@@ -1,5 +1,9 @@
 # AwesomeComponenets Release Notes
 
+#### **Version 2.0.1**
+
+ - Moved jsdom to devDependencies.
+
 #### **Version 2.0.0**
 
  - Adds `order()` method to programatically set the focus order of one or elements.
