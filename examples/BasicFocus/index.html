@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>BasicFocus - Examples - FocusTraversalAPI</title>
-		<script src="../../src/focus-traversal-api-polyfill.js" type="text/javascript"></script>
+		<script src="../../focus-traversal-api-polyfill.full.js" type="text/javascript"></script>
 		<style>
 			body {
 				font-family: sans-serif;
@@ -88,15 +88,15 @@
 			</div>
 		</div>
 		<script>
-			let first = document.body.querySelector("#first");
-			let backward = document.body.querySelector("#backward");
-			let forward = document.body.querySelector("#forward");
-			let last = document.body.querySelector("#last");
-			let list = document.body.querySelector("#list");
-			let next = document.body.querySelector("#next");
-			let prev = document.body.querySelector("#prev");
+			var first = document.body.querySelector("#first");
+			var backward = document.body.querySelector("#backward");
+			var forward = document.body.querySelector("#forward");
+			var last = document.body.querySelector("#last");
+			var list = document.body.querySelector("#list");
+			var next = document.body.querySelector("#next");
+			var prev = document.body.querySelector("#prev");
 
-			let removeHighlight = function() {
+			var removeHighlight = function() {
 				document.body.querySelectorAll("input").forEach(function(e){
 					e.className = "";
 				});
@@ -104,48 +104,48 @@
 
 			first.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 
-				let elements = focusManager.orderedElements();
-				if (elements.length>0) focusManager.focus(elements[0]);
+				var first = focusManager.first(document.body);
+				if (first) focusManager.focus(first);
 			});
 
 			backward.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 				focusManager.backward();
 			});
 
 			forward.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 				focusManager.forward();
 			});
 
 			last.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 
-				let elements = focusManager.orderedElements();
-				if (elements.length>0) focusManager.focus(elements[elements.length-1]);
+				var last = focusManager.last(document.body);
+				if (last) focusManager.focus(last);
 			});
 
-			list.addEventListener("click",async function(event){
-				focusManager.focus(focusManager.previouslyFocused);
-				console.log(await focusManager.orderedElements());
+			list.addEventListener("click",function(event){
+				focusManager.focus(focusManager.previouslyFocused,true);
+				console.log(focusManager.list());
 			});
 
 			next.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
-				let target = focusManager.next();
+				focusManager.focus(focusManager.previouslyFocused,true);
+				var target = focusManager.next();
 				if (target) target.className = "highlight";
 			});
 
 			prev.addEventListener("click",function(event){
 				removeHighlight();
-				focusManager.focus(focusManager.previouslyFocused);
-				let target = focusManager.previous();
+				focusManager.focus(focusManager.previouslyFocused,true);
+				var target = focusManager.previous();
 				if (target) target.className = "highlight";
 			});
 		</script>

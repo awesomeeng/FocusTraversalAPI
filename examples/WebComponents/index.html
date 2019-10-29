@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>WebComponents - Examples - FocusTraversalAPI</title>
-		<script src="../../src/focus-traversal-api-polyfill.js" type="text/javascript"></script>
+		<script src="../../focus-traversal-api-polyfill.full.js" type="text/javascript"></script>
 		<script src="./focus-example.js" type="module"></script>
 		<style>
 			body {
@@ -93,15 +93,15 @@
 			};
 
 			var undoButtonFocus = function() {
-				focusManager.focus(focusManager.previouslyFocused);
+				focusManager.focus(focusManager.previouslyFocused,true);
 			};
 
 			first.addEventListener("click",function(event){
 				removeHighlight();
 				undoButtonFocus();
 
-				var elements = focusManager.orderedElements();
-				if (elements.length>0) focusManager.focus(elements[0]);
+				var first = focusManager.first(document.body);
+				if (first) focusManager.focus(first);
 			});
 
 			backward.addEventListener("click",function(event){
@@ -120,13 +120,13 @@
 				removeHighlight();
 				undoButtonFocus();
 
-				var elements = focusManager.orderedElements();
-				if (elements.length>0) focusManager.focus(elements[elements.length-1]);
+				var last = focusManager.last(document.body);
+				if (last) focusManager.focus(last);
 			});
 
 			list.addEventListener("click",function(event){
 				undoButtonFocus();
-				console.log(focusManager.orderedElements());
+				console.log(focusManager.list());
 			});
 
 			next.addEventListener("click",function(event){
