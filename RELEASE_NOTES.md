@@ -14,6 +14,7 @@
  - DOMTraversal code broken out into a separate file and refactored. (This will move to a future project at some point.)
  - Lots of bug fixes around focus and shadowroot behaviors.
  - Revised next() and previous() behavior.
+ - Removed dependency on Tabable.
 
 #### **Version 1.2.0**
 
