@@ -201,6 +201,28 @@
 	};
 
 	/**
+	 * Find the first foucsable parent.
+	 *
+	 * @param  {HTMLElement|null} element
+	 * @return {HTMLElement|null}
+	 */
+	var parent = function parent(element) {
+		while (element) {
+			element = DT.up(element,true);
+			if (isFocusable(element)) return element;
+		}
+		return null;
+	};
+
+	/**
+	 * Find the first focusable child. Same as first().
+	 *
+	 * @param  {HTMLElement|null} element
+	 * @return {HTMLElement|null}
+	 */
+	var child = first;
+
+	/**
 	 * Moves the focus forward to the next focusable element.
 	 *
 	 * @param  {Object|null} focusOption
@@ -483,6 +505,8 @@
 		list: list,
 		first: first,
 		last: last,
+		parent: parent,
+		child: child,
 		forward: forward,
 		backward: backward,
 		next: next,

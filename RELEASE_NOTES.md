@@ -1,5 +1,9 @@
 # AwesomeComponenets Release Notes
 
+#### **Version 2.0.2**
+
+ - Adds the `parent()` and `child()` methods.
+
 #### **Version 2.0.1**
 
  - Moved jsdom to devDependencies.

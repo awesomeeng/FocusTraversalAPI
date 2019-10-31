@@ -69,6 +69,10 @@ You may now use the focusManager as described in the section below.
 
 > `window.focusManager.last(container)` - Returns the first element that would receive focus for the given container, or the current document if no container is provided.
 
+> `window.focusManager.parent(element)` - returns the first focusable ancestor of the given element.
+
+> `window.focusManager.child(element)` - returns the first focusable descendant of the given element. The same as `first(element)`.
+
 > `window.focusManager.order(element,element,element,etc)` - Programatically set the traversal order of one or more elements. Given an array of elements (or multiple arguments) order them in the order they are given.
 
 > `window.focusManager.trap()` - Trap focus within a given element, such that any focus event outside of the element's descendants will refocus the last focused element within the element's descendants. Traps calls stack, such that the latest trap always wins, but removing a trap will set th enext prior trap running.
