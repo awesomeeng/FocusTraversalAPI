@@ -8,7 +8,6 @@
   ],
   "main": "./polyfill/web-focus-api-polyfill.js",
   "dependencies": {
-    "tabbable": "4.0.0"
   },
   "devDependencies": {
 	"jsdom": "^15.2.0",
