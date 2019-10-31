@@ -1,5 +1,10 @@
 # AwesomeComponenets Release Notes
 
+#### **Version 2.0.3**
+
+ - Fixes bug in `untrap()` that would cause an exception if called with no traps set.
+
+
 #### **Version 2.0.2**
 
  - Adds the `parent()` and `child()` methods.

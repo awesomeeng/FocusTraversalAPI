@@ -352,7 +352,7 @@
 
 		if (traps.length<1) return;
 
-		var isfirst = traps[0].container===container;
+		var isfirst = traps[0] && traps[0].container===container;
 		traps = traps.filter(function(detail){
 			return detail.container!==container;
 		});
