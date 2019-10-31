@@ -356,7 +356,7 @@
 		traps = traps.filter(function(detail){
 			return detail.container!==container;
 		});
-		if (isfirst) focus(traps[0].last);
+		if (isfirst && traps[0]) focus(traps[0].last);
 	};
 
 	/**

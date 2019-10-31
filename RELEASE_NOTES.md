@@ -1,6 +1,6 @@
 # AwesomeComponenets Release Notes
 
-#### **Version 2.0.3**
+#### **Version 2.0.4**
 
  - Fixes bug in `untrap()` that would cause an exception if called with no traps set.
 
