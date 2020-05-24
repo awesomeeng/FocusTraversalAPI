@@ -1,5 +1,10 @@
 # AwesomeComponenets Release Notes
 
+#### **Version 2.1.0**
+
+ - Removes tabbable dependency.
+ - trap() and untrap() can now take more than one element argument.
+
 #### **Version 2.0.4**
 
  - Fixes bug in `untrap()` that would cause an exception if called with no traps set.

@@ -1,16 +1,15 @@
 {
   "name": "focus-traversal-api-polyfill",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "author": "the awesome engineering company",
   "license": "MIT",
   "contributors": [
     "Glen R. Goodwin"
   ],
   "main": "./polyfill/web-focus-api-polyfill.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-	"jsdom": "^15.2.0",
+    "jsdom": "^15.2.0",
     "eslint": "5.16.0",
     "jsdoc-to-markdown": "^5.0.2",
     "minify": "4.1.1",
@@ -23,7 +22,7 @@
     "test": "mocha test",
     "tests": "mocha test",
     "minify": "cat src/DOMTraversal.js src/focus-traversal-api-polyfill.js > focus-traversal-api-polyfill.full.js && minify focus-traversal-api-polyfill.full.js > focus-traversal-api-polyfill.min.js",
-	"dev": "nodemon -w src --exec \"npm run minify && node /mnt/c/DEV/Awesome/Code/zephjs/src/cli/CLI.js serve\""
+    "dev": "nodemon -w src --exec \"npm run minify && node /mnt/c/DEV/Awesome/Code/zephjs/src/cli/CLI.js serve\""
   },
   "description": "Focus Traversal API polyfill.",
   "directories": {

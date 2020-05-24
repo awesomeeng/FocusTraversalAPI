@@ -75,7 +75,7 @@ You may now use the focusManager as described in the section below.
 
 > `window.focusManager.order(element,element,element,etc)` - Programatically set the traversal order of one or more elements. Given an array of elements (or multiple arguments) order them in the order they are given.
 
-> `window.focusManager.trap()` - Trap focus within a given element, such that any focus event outside of the element's descendants will refocus the last focused element within the element's descendants. Traps calls stack, such that the latest trap always wins, but removing a trap will set th enext prior trap running.
+> `window.focusManager.trap()` - Trap focus within a given element(s), such that any focus event outside and of the given element(s) descendants will refocus the last focused element within the element's descendants. Traps calls stack, such that the latest trap always wins, but removing a trap will set th enext prior trap running.
 
 > `window.focusManager.untrap()` - Removes a trap.
 
