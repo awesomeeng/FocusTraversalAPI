@@ -503,9 +503,9 @@
 	 * @param  {HTMLElement} container
 	 * @return {void}
 	 */
-	var trap = function trap(...containers) {
+	var trap = function trap(/* element, element, element ... */) {
+		var containers = Array.prototype.slice.call(arguments);
 		if (containers.length<1) return;
-
 		containers = flatten(containers);
 
 		var bad = containers.some(function(c) {
@@ -518,7 +518,7 @@
 				return containers.indexOf(c)>-1;
 			});
 		});
-		if (existing) return;
+		if (existing.length>0) return;
 
 		var trap = {
 			containers: containers,
@@ -536,8 +536,10 @@
 	 * @param  {HTMLElement} container
 	 * @return {void}
 	 */
-	var untrap = function untrap(...containers) {
+	var untrap = function untrap(/* element, element, element ... */) {
 		if (traps.length<1) return;
+
+		var containers = Array.prototype.slice.call(arguments);
 		if (containers.length<1) return;
 
 		containers = flatten(containers);
@@ -552,10 +554,10 @@
 				return containers.indexOf(c)>-1;
 			});
 		});
-		var isFirst = traps[0] && traps[0]===existing;
+		var isFirst = existing && existing.length>0 && traps[0] && traps[0]===existing[0];
 
 		traps = traps.filter(function(trap){
-			return trap.containers.every(function(c) {
+			return !trap.containers.every(function(c) {
 				return containers.indexOf(c)>-1;
 			});
 		});
@@ -677,12 +679,14 @@
 				var trap = traps[0] || null;
 				if (trap && trap.last) {
 					var anc = DT.ancestors(related,true);
-					for (var i=0;i<trap.containers.length;i++) {
-						if (anc.indexOf(trap.containers[i])<0) {
-							focus(trap.last);
-							break;
-						}
-					}
+
+					let found = trap.containers.reduce(function(found,c){
+						if (found) return found;
+						if (anc.indexOf(c)>-1) return true;
+						return false;
+					},false);
+
+					if (!found) focus(trap.last);
 				}
 			}
 

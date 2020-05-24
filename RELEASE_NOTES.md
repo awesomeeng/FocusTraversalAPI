@@ -1,5 +1,9 @@
 # AwesomeComponenets Release Notes
 
+#### **Version 2.1.1**
+
+ - Fixes a bunch of error introduced accidentally with 2.1.0. Sorry.
+
 #### **Version 2.1.0**
 
  - Removes tabbable dependency.
