@@ -10,9 +10,9 @@
 		if (!array) throw new Error("Missing array.");
 		if (!(array instanceof Array)) array = Array.prototype.slice.call(array);
 
-		return array.reduce((array,x)=>{
+		return array.reduce(function(array,x) {
 			if (x instanceof Array) {
-				this.flatten(x).forEach((x)=>{
+				this.flatten(x).forEach(function(x) {
 					array.push(x);
 				});
 			}
@@ -266,7 +266,7 @@
 		}
 
 		for (var i=0;i<proxies.length;i++) {
-			let p = proxies[i];
+			var p = proxies[i];
 			if (p.source===element) {
 				element = p.target;
 				break;
@@ -293,7 +293,7 @@
 		}
 
 		for (var i=0;i<proxies.length;i++) {
-			let p = proxies[i];
+			var p = proxies[i];
 			if (p.source===element) {
 				element = previous(p.source);
 				break;
@@ -304,40 +304,52 @@
 	};
 
 	/**
-	 * Traps the focus within a given container. If the focus attempts to
-	 * leave the given container, focus is returned to the element that
+	 * Traps the focus within a given container(s). If the focus attempts to
+	 * leave the given container(s), focus is returned to the element that
 	 * last held the focus.
 	 *
-	 * If the given container doesn't have any focusable elements, this
+	 * If the given container(s) doesn't have any focusable elements, this
 	 * call will not result in setting the focus trap.
 	 *
-	 * A `trap()` is removed by calling `untrap()` with the same container
+	 * A `trap()` is removed by calling `untrap()` with the same container(s)
 	 * argument.
 	 *
 	 * `trap()` cascades, so calling it multiple times causes the
 	 * trap to narrow. Removing a trap will place the browser back into
 	 * the prior trap state.
 	 *
+	 * You may pass more than one element as arguments to trap and focus
+	 * is considered trapped if any of the elements contains the focused
+	 * element as a descendant.
+	 *
 	 * @param  {HTMLElement} container
 	 * @return {void}
 	 */
-	var trap = function trap(container) {
-		if (!container) return;
-		if (!(container instanceof HTMLElement)) return;
+	var trap = function trap(...containers) {
+		if (containers.length<1) return;
 
-		var existing = traps.map(function(detail){
-			return detail.container;
+		containers = flatten(containers);
+
+		var bad = containers.some(function(c) {
+			return !(c instanceof HTMLElement);
 		});
-		if (existing.indexOf(container)>-1) return;
+		if (bad) return;
 
-		var detail = {
-			container: container,
-			last: first(container),
+		var existing = traps.filter(function(trap){
+			return trap.containers.every(function(c) {
+				return containers.indexOf(c)>-1;
+			});
+		});
+		if (existing) return;
+
+		var trap = {
+			containers: containers,
+			last: first(containers[0]),
 			blur: null
 		};
-		traps.unshift(detail);
+		traps.unshift(trap);
 
-		focus(detail.last);
+		focus(trap.last);
 	};
 
 	/**
@@ -346,17 +358,30 @@
 	 * @param  {HTMLElement} container
 	 * @return {void}
 	 */
-	var untrap = function untrap(container) {
-		if (!container) return;
-		if (!(container instanceof HTMLElement)) return;
-
+	var untrap = function untrap(...containers) {
 		if (traps.length<1) return;
+		if (containers.length<1) return;
 
-		var isfirst = traps[0] && traps[0].container===container;
-		traps = traps.filter(function(detail){
-			return detail.container!==container;
+		containers = flatten(containers);
+
+		var bad = containers.some(function(c) {
+			return !(c instanceof HTMLElement);
 		});
-		if (isfirst && traps[0]) focus(traps[0].last);
+		if (bad) return;
+
+		var existing = traps.filter(function(trap){
+			return trap.containers.every(function(c) {
+				return containers.indexOf(c)>-1;
+			});
+		});
+		var isFirst = traps[0] && traps[0]===existing;
+
+		traps = traps.filter(function(trap){
+			return trap.containers.every(function(c) {
+				return containers.indexOf(c)>-1;
+			});
+		});
+		if (isFirst && traps[0]) focus(traps[0].last);
 	};
 
 	/**
@@ -381,7 +406,7 @@
 				return;
 			}
 			else if (e instanceof HTMLElement) {
-				let n = id++;
+				var n = id++;
 				if (pos!==null) n = pos++;
 				e.setAttribute("tabindex",""+n);
 			}
@@ -455,7 +480,7 @@
 			if (historyLimit>-1) history = history.slice(0,historyLimit);
 
 			for (var i=0;i<proxies.length;i++) {
-				let p = proxies[i];
+				var p = proxies[i];
 				if (p.source===target) {
 					focus(p.target);
 					return;
@@ -474,9 +499,11 @@
 				var trap = traps[0] || null;
 				if (trap && trap.last) {
 					var anc = DT.ancestors(related,true);
-					if (anc.indexOf(trap.container)<0) {
-						focus(trap.last);
-						return;
+					for (var i=0;i<trap.containers.length;i++) {
+						if (anc.indexOf(trap.containers[i])<0) {
+							focus(trap.last);
+							break;
+						}
 					}
 				}
 			}
@@ -487,7 +514,7 @@
 			if (event.shiftKey && event.keyCode===9) {
 				var source = currentFocus;
 				for (var i=0;i<proxies.length;i++) {
-					let p = proxies[i];
+					var p = proxies[i];
 					if (p.source===source || p.target===source) {
 						focus(previous(p.source));
 						event.preventDefault();
