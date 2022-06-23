@@ -9,7 +9,7 @@
   "main": "./polyfill/web-focus-api-polyfill.js",
   "dependencies": {},
   "devDependencies": {
-    "jsdom": "^15.2.0",
+    "jsdom": "^16.5.0",
     "eslint": "5.16.0",
     "jsdoc-to-markdown": "^5.0.2",
     "minify": "4.1.1",
