@@ -13,7 +13,7 @@
     "eslint": "5.16.0",
     "jsdoc-to-markdown": "^5.0.2",
     "minify": "4.1.1",
-    "mocha": "^6.2.2"
+    "mocha": "^10.2.0"
   },
   "optionalDependencies": {},
   "scripts": {
